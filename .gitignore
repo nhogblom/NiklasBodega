@@ -31,5 +31,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# Windows
+Thumbs.db
+desktop.ini
+
 ### VS Code ###
 .vscode/
