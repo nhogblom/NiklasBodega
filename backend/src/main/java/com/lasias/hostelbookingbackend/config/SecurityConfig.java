@@ -1,5 +1,6 @@
 package com.lasias.hostelbookingbackend.config;
 
+import com.lasias.hostelbookingbackend.services.CustomOidcUserService;
 import com.lasias.hostelbookingbackend.services.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +17,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final OAuth2UserService oAuth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2UserService oAuth2UserService;
+    private final CustomOidcUserService customOidcUserService;
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,7 +33,10 @@ public class SecurityConfig {
                     })
                     .oauth2Login(oAuth2 ->
                             oAuth2
-                            .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
+                            .userInfoEndpoint(userInfo -> userInfo
+                                    .userService(oAuth2UserService)
+                                    .oidcUserService(customOidcUserService)
+                            )
                             .successHandler(oAuth2LoginSuccessHandler)
                     )
                     .build();

@@ -5,7 +5,6 @@ import com.lasias.hostelbookingbackend.models.AuthProvider;
 import com.lasias.hostelbookingbackend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -41,7 +40,9 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             user = existingUser.get();
             log.info("User logged in with email: {}", user.getEmail());
         }else{
-            userService.register(name,email,oAuth2User.getName(),AuthProvider.valueOf(registrationId.toUpperCase()));
+            AuthProvider authProvider = AuthProvider.valueOf(registrationId.toUpperCase());
+            String authProviderId = oAuth2User.getName();
+            userService.register(name,email,authProviderId,authProvider);
             log.info("New user registered with email: {}", email);
         }
         return oAuth2User;
