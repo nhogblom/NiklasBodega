@@ -4,7 +4,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     username: string | null;
     role: string | null;
-    login: (username: string, role: string) => void;
+    login: (username: string) => void;
     logout: () => void;
 }
 
@@ -16,10 +16,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [role, setRole] = useState<string | null>(null);
     // const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-    const login = (username: string, role: string) => {
+    const login = (username: string) => {
         setIsAuthenticated(true);
         setUsername(username);
-        setRole(role);
+
     };
 
     const logout = () => {

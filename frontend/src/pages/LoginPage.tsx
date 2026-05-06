@@ -2,17 +2,30 @@ import {useState} from "react";
 import {useAuth} from "../hooks/useAuth.tsx";
 import {useNavigate} from "react-router-dom";
 import Navbar from "../components/Navbar.tsx";
+import {loginUser} from "../api/AuthenticationApiService.ts";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const {login} = useAuth();
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleSubmit = async () => {
-        return "Method that POSTs to login endpoint";
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        setLoading(true);
+        try{
+            await loginUser(username, password);
+            setLoading(false);
+            login(username);
+            navigate("/");
+        }catch(error){
+            setError("Could not log in");
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -68,12 +81,14 @@ const LoginPage = () => {
                             </a>
                         </div>
                     </div>
-
+                    {error && (
+                        <p className="text-red-600 text-sm text-center mt-2">{error}</p>
+                    )}
                     <button
                         onClick={handleSubmit}
                         className="w-full bg-orange-900 text-white py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-orange-800 transition mt-4"
                     >
-                        Sign In
+                        {loading ? "Signing in..." : "Sign In"}
                     </button>
 
                     <p className="text-center text-sm text-stone-500 mt-5">
