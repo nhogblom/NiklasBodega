@@ -1,7 +1,7 @@
 package com.lasias.hostelbookingbackend.controllers;
 
 
-import com.lasias.hostelbookingbackend.dto.AuthResponse;
+import com.lasias.hostelbookingbackend.dtos.AuthResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
