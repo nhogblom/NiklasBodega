@@ -20,21 +20,23 @@ const RegisterPage = () => {
     if (success) {
       return;
     }
-    if (password != passwordConfirm) {
+    if (password !== passwordConfirm) {
       setError("Passwords don't match");
+      return;
     }
     //TODO fler kontroller av lösen.
 
     setLoading(true);
     try {
-      await registerUser(username, password, password);
+      await registerUser(username, email, password);
       setSuccess(true);
-      setLoading(false);
       setTimeout(() => {
         navigate('/login');
       }, 2000);
     } catch {
       setError('Failed to register.');
+    } finally {
+      setLoading(false);
     }
   };
 
