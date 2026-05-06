@@ -26,7 +26,7 @@ public class CustomOidcUserService extends OidcUserService {
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String email = oidcUser.getEmail();
-        String name = oidcUser.getName();
+        String name = oidcUser.getFullName();
 
         Optional<AppUser> existingUser = userRepository.findByEmail(email);
 
