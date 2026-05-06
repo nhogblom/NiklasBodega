@@ -1,6 +1,6 @@
-const NewBookingPage: React.FC = () => {
+const NewBookingsPage: React.FC = () => {
     return (
         <div>new booking</div>
     )
 }
-export default NewBookingPage;
+export default NewBookingsPage;

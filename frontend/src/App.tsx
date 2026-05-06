@@ -1,8 +1,16 @@
 import './App.css'
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Navigate, Outlet, Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
+import {useAuth} from "./hooks/useAuth.tsx";
+import MyBookingsPage from "./pages/MyBookingsPage.tsx";
+import NewBookingsPage from "./pages/NewBookingsPage.tsx";
+
+const ProtectedRoute = () => {
+    const { isAuthenticated } = useAuth();
+    return isAuthenticated ? <Outlet /> :  <Navigate to="/login" />;
+};
 
 
 function App() {
@@ -12,6 +20,10 @@ function App() {
               <Route path="/login" element= {<LoginPage />} />
               <Route path="/" element={<HomePage/>}/>
               <Route path="/register" element={<RegisterPage/>}/>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/myBookings" element={<MyBookingsPage/>} />
+                <Route path="/newBooking" element={<NewBookingsPage/>} />
+              </Route>
           </Routes>
       </BrowserRouter>
      )
