@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class AppUserService {
     private final UserRepository userRepository;
 
     public void register(String name, String email, String authProviderId,AuthProvider authProvider){
