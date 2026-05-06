@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class CustomOidcUserService extends OidcUserService {
-    private final UserService userService;
+    private final AppUserService appUserService;
     private final UserRepository userRepository;
 
     @Override
@@ -37,7 +37,7 @@ public class CustomOidcUserService extends OidcUserService {
         {
             AuthProvider authProvider = AuthProvider.valueOf(registrationId.toUpperCase());
             String authProviderId = oidcUser.getName();
-            userService.register(name,email,authProviderId,authProvider);
+            appUserService.register(name,email,authProviderId,authProvider);
             log.info("New user registered with email: {}", email);
         }
         return oidcUser;

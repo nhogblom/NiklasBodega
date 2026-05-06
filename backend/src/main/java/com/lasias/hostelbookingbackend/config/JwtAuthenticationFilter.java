@@ -3,7 +3,6 @@ package com.lasias.hostelbookingbackend.config;
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.repositories.UserRepository;
 import com.lasias.hostelbookingbackend.services.JwtService;
-import com.lasias.hostelbookingbackend.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

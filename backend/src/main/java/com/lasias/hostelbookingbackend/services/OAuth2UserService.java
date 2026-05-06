@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
-    private final UserService userService;
+    private final AppUserService appUserService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
@@ -42,7 +42,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         }else{
             AuthProvider authProvider = AuthProvider.valueOf(registrationId.toUpperCase());
             String authProviderId = oAuth2User.getName();
-            userService.register(name,email,authProviderId,authProvider);
+            appUserService.register(name,email,authProviderId,authProvider);
             log.info("New user registered with email: {}", email);
         }
         return oAuth2User;
