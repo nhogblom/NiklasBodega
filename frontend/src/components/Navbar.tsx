@@ -13,8 +13,13 @@ const Navbar = () => {
 
   return (
     <nav className="flex items-center justify-between px-8 py-6 bg-white border-b border-stone-200 sticky top-0 z-50">
-      <div className="text-2xl font-serif font-bold tracking-tighter text-orange-900">
-        NIKLAS BODEGA
+      <div>
+        <Link
+          to="/"
+          className="text-2xl font-serif font-bold tracking-tighter text-orange-900"
+        >
+          NIKLAS BODEGA
+        </Link>
       </div>
       <div className="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
         {navItems.map((item) => (
