@@ -4,6 +4,7 @@ import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.models.AuthProvider;
 import com.lasias.hostelbookingbackend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -14,9 +15,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
@@ -31,18 +34,15 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             email = oAuth2User.getAttribute("login") + "@github.com";
         }
 
-        Optional<AppUser> oUser = userRepository.findByEmail(email);
+        Optional<AppUser> existingUser = userRepository.findByEmail(email);
         AppUser user;
 
-        if(oUser.isPresent()){
-            user = oUser.get();
+        if(existingUser.isPresent()){
+            user = existingUser.get();
+            log.info("User logged in with email: {}", user.getEmail());
         }else{
-            user = new AppUser();
-            user.setName(name);
-            user.setEmail(email);
-            user.setAuthProvider(AuthProvider.valueOf(registrationId));
-            user.setAuthProviderId(oAuth2User.getName());
-            userRepository.save(user);
+            userService.register(name,email,oAuth2User.getName(),AuthProvider.valueOf(registrationId.toUpperCase()));
+            log.info("New user registered with email: {}", email);
         }
         return oAuth2User;
     }
