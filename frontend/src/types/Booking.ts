@@ -1,6 +1,7 @@
 export interface Booking {
   id: number;
   roomName: string;
+  roomImageUrl: string;
   checkInDate: string;
   checkOutDate: string;
   extraBed: boolean;
