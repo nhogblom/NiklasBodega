@@ -18,6 +18,6 @@ public class UserService {
         user.setEmail(email);
         user.setAuthProvider(authProvider);
         user.setAuthProviderId(authProviderId);
-        AppUser newlyRegisteredUser = userRepository.save(user);
+        userRepository.save(user);
     }
 }
