@@ -1,6 +1,10 @@
 package com.lasias.hostelbookingbackend.repositories;
-import com.lasias.hostelbookingbackend.models.UserEntity;
+import com.lasias.hostelbookingbackend.models.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<AppUser, Long> {
+
+    Optional<AppUser> findByEmail(String email);
 }

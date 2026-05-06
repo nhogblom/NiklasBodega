@@ -4,7 +4,7 @@ import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.models.BookingEntity;
 import com.lasias.hostelbookingbackend.models.RoomEntity;
-import com.lasias.hostelbookingbackend.models.UserEntity;
+import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
 import com.lasias.hostelbookingbackend.repositories.RoomRepository;
 import com.lasias.hostelbookingbackend.repositories.UserRepository;
@@ -29,7 +29,7 @@ public class BookingService {
 
     public BookingResponseDTO createBooking(CreateBookingRequestDTO request) {
         validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
-        UserEntity user = userRepository.findById(request.getUserId())
+        AppUser user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         RoomEntity room = roomRepository.findById(request.getRoomId())
