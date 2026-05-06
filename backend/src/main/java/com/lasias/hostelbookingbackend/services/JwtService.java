@@ -13,7 +13,7 @@ public class JwtService {
     @Value("${app.jwt.secret}")
     private String secretKey;
 
-    private String generateToken(String email){
+    public String generateToken(String email){
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -22,7 +22,7 @@ public class JwtService {
                 .compact();
     }
 
-    private String extractEmail(String token){
+    public String extractEmail(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey.getBytes())
                 .build()
