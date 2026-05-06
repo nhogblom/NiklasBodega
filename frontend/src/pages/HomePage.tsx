@@ -1,22 +1,7 @@
 import React from 'react';
+import Navbar from "../components/Navbar.tsx";
 
-const Navbar = () => (
-    <nav className="flex items-center justify-between px-8 py-6 bg-white border-b border-stone-200 sticky top-0 z-50">
-        <div className="text-2xl font-serif font-bold tracking-tighter text-orange-900">
-            NIKLAS BODEGA
-        </div>
-        <div className="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
-            {['Rooms', 'Restaurant', 'Experience', 'Contact'].map((item) => (
-                <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-orange-700 transition">
-                    {item}
-                </a>
-            ))}
-        </div>
-        <button className="bg-orange-900 text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-orange-800 transition">
-            BOOK NOW
-        </button>
-    </nav>
-);
+
 
 const BookingInput = ({ label, value }: { label: string; value: string }) => (
     <div className="flex-1 text-left min-w-[150px]">
