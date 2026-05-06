@@ -10,13 +10,14 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
-public class UserEntity {
+public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    private String name;
     private String password;
+    @Column(unique = true, nullable = false)
     private String email;
     private List<String> roles;
     @CreatedDate
@@ -24,6 +25,9 @@ public class UserEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     private String token;
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+    private String authProviderId;
     //private List<Bookings> listOfBookings;
 
 }
