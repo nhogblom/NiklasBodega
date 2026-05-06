@@ -19,7 +19,7 @@ public class AppUser {
     private String password;
     @Column(unique = true, nullable = false)
     private String email;
-    private List<String> roles;
+    private String role;
     @CreatedDate
     private LocalDateTime createdAt;
     @UpdateTimestamp
