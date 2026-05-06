@@ -1,5 +1,5 @@
 package com.lasias.hostelbookingbackend.services;
-
+import java.time.LocalDate;
 import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.models.BookingEntity;
@@ -28,6 +28,7 @@ public class BookingService {
     }
 
     public BookingResponseDTO createBooking(CreateBookingRequestDTO request) {
+        validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
         UserEntity user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -53,6 +54,20 @@ public class BookingService {
                 savedBooking.isExtraBed(),
                 savedBooking.getStatus().name()
         );
+    }
+
+    private void validateBookingDates(LocalDate checkInDate, LocalDate checkOutDate) {
+        if (checkInDate == null || checkOutDate == null) {
+            throw new IllegalArgumentException("Check-in and check-out dates are required");
+        }
+
+        if (checkInDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Check-in date cannot be in the past");
+        }
+
+        if (!checkOutDate.isAfter(checkInDate)) {
+            throw new IllegalArgumentException("Check-out date must be after check-in date");
+        }
     }
 
     public BookingResponseDTO getBookingById(Long id) {
