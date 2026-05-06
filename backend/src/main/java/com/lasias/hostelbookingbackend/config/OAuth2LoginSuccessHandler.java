@@ -26,7 +26,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         String token = jwtService.generateToken(email);
 
-        String frontendUrl = "http://localhost:5173/oauth2/redirect=token="+token;
+        String frontendUrl = "http://localhost:5173/oauth2/redirect?token="+token;
 
         getRedirectStrategy().sendRedirect(request, response, frontendUrl);
     }
