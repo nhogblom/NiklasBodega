@@ -1,4 +1,6 @@
 package com.lasias.hostelbookingbackend.repositories;
+import com.lasias.hostelbookingbackend.models.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public class UserRepository {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 }

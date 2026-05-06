@@ -1,0 +1,14 @@
+POST http://localhost:8080/api/bookings
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "roomId": 1,
+  "checkInDate": "2026-06-10",
+  "checkOutDate": "2026-06-12",
+  "extraBed": false
+}
+
+###
+
+GET http://localhost:8080/api/bookings/1
