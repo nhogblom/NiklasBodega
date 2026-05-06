@@ -28,7 +28,9 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-        <Route path="roomspage" element={<RoomsPage />} />
+        <Route path="/roomspage" element={<RoomsPage />} />
+        //TODO MOVE TO PROTECTED ROUTE WHEN AUTH IS ONLINE
+        <Route path="/bookings" element={<MyBookingsPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/myBookings" element={<MyBookingsPage />} />
           <Route path="/newBooking" element={<NewBookingsPage />} />
