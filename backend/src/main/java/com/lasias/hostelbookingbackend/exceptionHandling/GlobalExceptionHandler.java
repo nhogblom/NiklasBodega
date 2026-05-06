@@ -1,4 +1,4 @@
-package com.lasias.hostelbookingbackend.controllers;
+package com.lasias.hostelbookingbackend.exceptionHandling;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
