@@ -4,7 +4,11 @@ export const registerSchema = z
   .object({
     username: z
       .email()
-      .min(5, 'Username must be at least 3 characters.')
+      .min(5, 'Username must be at least 5 characters.')
+      .max(50, "Username can't be longer than 50 characters."),
+
+    fullname: z.string()
+      .min(2, 'Username must be at least 3 characters.')
       .max(50, "Username can't be longer than 50 characters."),
 
     password: z
