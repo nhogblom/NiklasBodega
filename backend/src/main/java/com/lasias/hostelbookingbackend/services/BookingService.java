@@ -3,6 +3,7 @@ import java.time.LocalDate;import com.lasias.hostelbookingbackend.dtos.UpdateBoo
 import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.models.BookingEntity;
+import com.lasias.hostelbookingbackend.models.BookingStatus;
 import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.models.UserEntity;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
@@ -110,5 +111,13 @@ public class BookingService {
                 savedBooking.isExtraBed(),
                 savedBooking.getStatus().name()
         );
+    }
+    public void deleteBooking(Long id) {
+        BookingEntity booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        booking.setStatus(BookingStatus.CANCELLED);
+
+        bookingRepository.save(booking);
     }
 }
