@@ -8,7 +8,7 @@ const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [email, setEmail] = useState('');
+  const [fullname, setFullname] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -28,7 +28,7 @@ const RegisterPage = () => {
 
     setLoading(true);
     try {
-      await registerUser(username, email, password);
+      await registerUser(username, fullname, password);
       setSuccess(true);
       setTimeout(() => {
         navigate('/login');
@@ -81,11 +81,11 @@ const RegisterPage = () => {
 
           <div className="mb-4">
             <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
-              Username
+              Username (Email)
             </label>
             <input
               type="text"
-              placeholder="Choose a username"
+              placeholder="Choose a username (Email)"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none text-sm"
@@ -94,13 +94,13 @@ const RegisterPage = () => {
 
           <div className="mb-4">
             <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
-              Email
+              Full name
             </label>
             <input
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Your full name"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
               className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none text-sm"
             />
           </div>

@@ -15,13 +15,13 @@ export const loginUser = async (username: string, password: string) => {
 
 export const registerUser = async (
   username: string,
-  email: string,
+  fullname: string,
   password: string,
 ) => {
   try {
     const response = await axiosInstance.post('/api/auth/register', {
       username,
-      email,
+      fullname,
       password,
     });
     return response.data;
