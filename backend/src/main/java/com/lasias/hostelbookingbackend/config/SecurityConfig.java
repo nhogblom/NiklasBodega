@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.config;
 
 import com.lasias.hostelbookingbackend.services.CustomOidcUserService;
 import com.lasias.hostelbookingbackend.services.OAuth2UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,8 +33,12 @@ public class SecurityConfig {
                     .cors(Customizer.withDefaults())
                     .csrf(csrf -> csrf.disable())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .exceptionHandling(exception -> exception
+                            .authenticationEntryPoint((request, response, authException) -> {
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                            }))
                     .authorizeHttpRequests(auth -> {
-                        auth.requestMatchers("/","/login**","/oauth2/**").permitAll();
+                        auth.requestMatchers("/api/auth/**","/api/auth/login**","/oauth2/**").permitAll();
                         auth.anyRequest().authenticated();
                     })
                     .oauth2Login(oAuth2 ->
@@ -43,7 +48,8 @@ public class SecurityConfig {
                                     .oidcUserService(customOidcUserService)
                             )
                             .successHandler(oAuth2LoginSuccessHandler)
-                    ).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                    )
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                     .build();
         }
 
