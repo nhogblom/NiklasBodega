@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth.tsx';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.tsx';
 import { loginUser } from '../api/AuthenticationApiService.ts';
 import { useForm } from 'react-hook-form';
@@ -26,7 +26,6 @@ const LoginPage = () => {
     setLoading(true);
     try {
       await loginUser(data.username, data.password);
-      setLoading(false);
       login(data.username);
       navigate('/');
     } catch {
@@ -34,6 +33,14 @@ const LoginPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/oauth2/authorization/google`;
+  };
+
+  const handleGithubLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/oauth2/authorization/github`;
   };
 
   return (
@@ -113,6 +120,36 @@ const LoginPage = () => {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-stone-200" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase tracking-widest text-stone-400">
+              <span className="bg-white px-4">Or continue with</span>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="flex-1 flex items-center justify-center gap-2 border border-stone-200 py-2.5 rounded text-xs font-bold uppercase tracking-widest text-stone-600 hover:bg-stone-50 transition"
+            >
+              <img
+                src="https://www.google.com/favicon.ico"
+                className="w-4 h-4"
+              />
+              Google
+            </button>
+            <button
+              type="button"
+              onClick={handleGithubLogin}
+              className="flex-1 flex items-center justify-center gap-2 border border-stone-200 py-2.5 rounded text-xs font-bold uppercase tracking-widest text-stone-600 hover:bg-stone-50 transition"
+            >
+              <img src="https://github.com/favicon.ico" className="w-4 h-4" />
+              GitHub
+            </button>
+          </div>
           <div className="relative mt-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-stone-200" />
@@ -121,12 +158,12 @@ const LoginPage = () => {
               <span className="bg-white px-4">New here?</span>
             </div>
           </div>
-          <span
-            onClick={() => navigate('/register')}
+          <Link
+            to="/register"
             className="mt-4 w-full block text-center border border-orange-900 text-orange-900 py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-orange-50 transition"
           >
             Create an account
-          </span>
+          </Link>
         </div>
       </div>
     </div>
