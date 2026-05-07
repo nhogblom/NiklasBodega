@@ -14,10 +14,11 @@ public class JwtService {
     private String secretKey;
 
     public String generateToken(String email){
+        int expiryTime = 86400000;
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + expiryTime))
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .compact();
     }

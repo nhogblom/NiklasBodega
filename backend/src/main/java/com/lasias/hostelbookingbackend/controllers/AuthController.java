@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AppUserService appUserService;
 
-    @PostMapping("/")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO request) {
-        return appUserService.localLogin(request);
+        return ResponseEntity.ok().body(appUserService.loginUser(request));
     }
+
+
 }
