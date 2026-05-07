@@ -3,25 +3,33 @@ import { useAuth } from '../hooks/useAuth.tsx';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.tsx';
 import { loginUser } from '../api/AuthenticationApiService.ts';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type LoginFormData, loginSchema } from '../utils/ValidationUtils.ts';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginFormData) => {
     setError(null);
     setLoading(true);
     try {
-      await loginUser(username, password);
+      await loginUser(data.username, data.password);
       setLoading(false);
-      login(username);
+      login(data.username);
       navigate('/');
-    } catch (error) {
+    } catch {
       setError('Could not log in');
     } finally {
       setLoading(false);
@@ -53,47 +61,58 @@ const LoginPage = () => {
             </p>
           </div>
           <hr className="border-stone-200 mb-6" />
-          <div className="mb-4">
-            <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
-              Username
-            </label>
-            <input
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none text-sm"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none text-sm"
-            />
-            <div className="text-right mt-1">
-              <a
-                onClick={() => navigate('/forgotpassword')}
-                className="text-xs text-orange-700 hover:text-orange-900"
-              >
-                Forgot password?
-              </a>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mb-4">
+              <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
+                Username
+              </label>
+              <input
+                {...register('username')}
+                type="text"
+                placeholder="Enter your username"
+                className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none text-sm"
+              />
+              {errors.username && (
+                <p className="text-red-500 text-xs mt-1 ml-1">
+                  {errors.username.message}
+                </p>
+              )}
             </div>
-          </div>
-          {error && (
-            <p className="text-red-600 text-sm text-center mt-2">{error}</p>
-          )}
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-orange-900 text-white py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-orange-800 transition mt-4"
-          >
-            {loading ? 'Signing in...' : 'Sign In'}
-          </button>
+
+            <div className="mb-2">
+              <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
+                Password
+              </label>
+              <input
+                {...register('password')}
+                type="password"
+                placeholder="••••••••"
+                className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none text-sm"
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1 ml-1">
+                  {errors.password.message}
+                </p>
+              )}
+              <div className="text-right mt-1">
+                <a
+                  onClick={() => navigate('/forgotpassword')}
+                  className="text-xs text-orange-700 hover:text-orange-900"
+                >
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            {error && (
+              <p className="text-red-600 text-sm text-center mt-2">{error}</p>
+            )}
+            <button
+              type="submit"
+              className="w-full bg-orange-900 text-white py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-orange-800 transition mt-4"
+            >
+              {loading ? 'Signing in...' : 'Sign In'}
+            </button>
+          </form>
           <div className="relative mt-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-stone-200" />
