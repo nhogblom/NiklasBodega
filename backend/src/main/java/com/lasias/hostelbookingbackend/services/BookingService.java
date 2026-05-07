@@ -1,5 +1,5 @@
 package com.lasias.hostelbookingbackend.services;
-import java.time.LocalDate;
+import java.time.LocalDate;import com.lasias.hostelbookingbackend.dtos.UpdateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.models.BookingEntity;
@@ -82,6 +82,33 @@ public class BookingService {
                 booking.getCheckOutDate(),
                 booking.isExtraBed(),
                 booking.getStatus().name()
+        );
+    }
+
+    public BookingResponseDTO updateBooking(Long id, UpdateBookingRequestDTO request) {
+        validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
+
+        BookingEntity booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        RoomEntity room = roomRepository.findById(request.getRoomId())
+                .orElseThrow(() -> new RuntimeException("Room not found"));
+
+        booking.setRoom(room);
+        booking.setCheckInDate(request.getCheckInDate());
+        booking.setCheckOutDate(request.getCheckOutDate());
+        booking.setExtraBed(request.isExtraBed());
+
+        BookingEntity savedBooking = bookingRepository.save(booking);
+
+        return new BookingResponseDTO(
+                savedBooking.getId(),
+                savedBooking.getUser().getId(),
+                savedBooking.getRoom().getId(),
+                savedBooking.getCheckInDate(),
+                savedBooking.getCheckOutDate(),
+                savedBooking.isExtraBed(),
+                savedBooking.getStatus().name()
         );
     }
 }

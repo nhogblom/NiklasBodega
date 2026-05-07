@@ -9,6 +9,19 @@ Content-Type: application/json
   "extraBed": false
 }
 
+
+###
+
+PUT http://localhost:8080/api/bookings/1
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "checkInDate": "2026-08-01",
+  "checkOutDate": "2026-08-04",
+  "extraBed": false
+}
+
 ###
 
 GET http://localhost:8080/api/bookings/1

@@ -4,7 +4,7 @@ import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.services.BookingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*;import com.lasias.hostelbookingbackend.dtos.UpdateBookingRequestDTO;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -25,6 +25,15 @@ public class BookingController {
     @GetMapping("/{id}")
     public ResponseEntity<BookingResponseDTO> getBookingById(@PathVariable Long id) {
         BookingResponseDTO response = bookingService.getBookingById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BookingResponseDTO> updateBooking(
+            @PathVariable Long id,
+            @RequestBody UpdateBookingRequestDTO request
+    ) {
+        BookingResponseDTO response = bookingService.updateBooking(id, request);
         return ResponseEntity.ok(response);
     }
 }
