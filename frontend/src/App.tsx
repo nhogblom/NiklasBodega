@@ -14,6 +14,7 @@ import MyBookingsPage from './pages/MyBookingsPage.tsx';
 import NewBookingsPage from './pages/NewBookingsPage.tsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.tsx';
 import RoomsPage from './pages/RoomsPage.tsx';
+import OAuthRedirectPage from './pages/OAuthRedirectPage.tsx';
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
@@ -29,6 +30,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/roomspage" element={<RoomsPage />} />
+        <Route path="/oauth2/redirect" element={<OAuthRedirectPage />} />
         //TODO MOVE TO PROTECTED ROUTE WHEN AUTH IS ONLINE
         <Route path="/bookings" element={<MyBookingsPage />} />
         <Route element={<ProtectedRoute />}>

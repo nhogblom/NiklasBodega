@@ -35,12 +35,13 @@ const LoginPage = () => {
     }
   };
 
+  //TODO needs some work on these two, will move to own file.
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/oauth2/authorization/google`;
+    window.location.href = `http://localhost:8080/oauth2/authorization/google`;
   };
 
   const handleGithubLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/oauth2/authorization/github`;
+    window.location.href = `http://localhost:8080/oauth2/authorization/github`;
   };
 
   return (
