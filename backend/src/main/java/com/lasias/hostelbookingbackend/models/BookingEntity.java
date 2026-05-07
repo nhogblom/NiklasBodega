@@ -19,7 +19,7 @@ public class BookingEntity {
     private BookingStatus status = BookingStatus.ACTIVE;
 
     @ManyToOne
-    private UserEntity user;
+    private AppUser user;
 
     @ManyToOne
     private RoomEntity room;
@@ -27,7 +27,7 @@ public class BookingEntity {
     public BookingEntity() {
     }
 
-    public BookingEntity(UserEntity user, RoomEntity room, LocalDate checkInDate, LocalDate checkOutDate, boolean extraBed) {
+    public BookingEntity(AppUser user, RoomEntity room, LocalDate checkInDate, LocalDate checkOutDate, boolean extraBed) {
         this.user = user;
         this.room = room;
         this.checkInDate = checkInDate;
@@ -56,7 +56,7 @@ public class BookingEntity {
         return status;
     }
 
-    public UserEntity getUser() {
+    public AppUser getUser() {
         return user;
     }
 
@@ -84,7 +84,7 @@ public class BookingEntity {
         this.status = status;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(AppUser user) {
         this.user = user;
     }
 
