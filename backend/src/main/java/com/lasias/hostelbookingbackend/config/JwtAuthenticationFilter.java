@@ -1,7 +1,7 @@
 package com.lasias.hostelbookingbackend.config;
 
 import com.lasias.hostelbookingbackend.models.AppUser;
-import com.lasias.hostelbookingbackend.repositories.UserRepository;
+import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import com.lasias.hostelbookingbackend.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             email = jwtService.extractEmail(jwt);
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                Optional<AppUser> user = userRepository.findByEmail(email);
+                Optional<AppUser> user = appUserRepository.findByEmail(email);
                 if (user.isPresent()) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, null, user.get().getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);

@@ -7,29 +7,29 @@ import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
 import com.lasias.hostelbookingbackend.repositories.RoomRepository;
-import com.lasias.hostelbookingbackend.repositories.UserRepository;
+import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookingService {
 
     private final BookingRepository bookingRepository;
-    private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
     private final RoomRepository roomRepository;
 
     public BookingService(
             BookingRepository bookingRepository,
-            UserRepository userRepository,
+            AppUserRepository appUserRepository,
             RoomRepository roomRepository
     ) {
         this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
+        this.appUserRepository = appUserRepository;
         this.roomRepository = roomRepository;
     }
 
     public BookingResponseDTO createBooking(CreateBookingRequestDTO request) {
         validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
-        AppUser user = userRepository.findById(request.getUserId())
+        AppUser user = appUserRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         RoomEntity room = roomRepository.findById(request.getRoomId())

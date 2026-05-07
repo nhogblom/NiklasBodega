@@ -2,7 +2,7 @@ package com.lasias.hostelbookingbackend.services;
 
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.models.AuthProvider;
-import com.lasias.hostelbookingbackend.repositories.UserRepository;
+import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class OAuth2UserService extends DefaultOAuth2UserService {
-    private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
     private final AppUserService appUserService;
 
     @Override
@@ -33,7 +33,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             email = oAuth2User.getAttribute("login") + "@github.com";
         }
 
-        Optional<AppUser> existingUser = userRepository.findByEmail(email);
+        Optional<AppUser> existingUser = appUserRepository.findByEmail(email);
         AppUser user;
 
         if(existingUser.isPresent()){

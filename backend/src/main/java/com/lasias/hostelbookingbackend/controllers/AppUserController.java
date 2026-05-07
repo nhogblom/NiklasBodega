@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-public class UserController {
+public class AppUserController {
 
     private final AppUserService appUserService;
 // todo add endpoints for changing details of a certain user.

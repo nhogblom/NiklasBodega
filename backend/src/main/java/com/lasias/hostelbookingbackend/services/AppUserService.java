@@ -4,7 +4,7 @@ import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.models.AuthProvider;
-import com.lasias.hostelbookingbackend.repositories.UserRepository;
+import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AppUserService {
-    private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
@@ -28,12 +28,12 @@ public class AppUserService {
         user.setAuthProvider(authProvider);
         user.setAuthProviderId(authProviderId);
         user.setRole("USER");
-        userRepository.save(user);
+        appUserRepository.save(user);
     }
 
     // register user through user information from the frontend.
     public AuthResponseDTO register(RegisterNewUserDTO newUser){
-        if (userRepository.findByEmail(newUser.email()).isPresent()){
+        if (appUserRepository.findByEmail(newUser.email()).isPresent()){
             throw new IllegalArgumentException("Email already in use");
         }
         AppUser user = new AppUser();
@@ -41,7 +41,7 @@ public class AppUserService {
         user.setEmail(newUser.email());
         user.setPassword(hashPassword(newUser.password()));
         user.setRole("USER");
-        userRepository.save(user);
+        appUserRepository.save(user);
 
         return new AuthResponseDTO(jwtService.generateToken(user.getEmail()));
     }
@@ -59,7 +59,7 @@ public class AppUserService {
             log.error("Login failed, email and password are required");
             throw new IllegalArgumentException("Email and password are required");
         }
-        AppUser user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        AppUser user = appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         if (validPassword(password, user.getPassword())){
             return new AuthResponseDTO(jwtService.generateToken(user.getEmail()));
         }

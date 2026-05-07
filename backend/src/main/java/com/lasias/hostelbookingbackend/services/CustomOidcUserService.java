@@ -2,7 +2,7 @@ package com.lasias.hostelbookingbackend.services;
 
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.models.AuthProvider;
-import com.lasias.hostelbookingbackend.repositories.UserRepository;
+import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @Slf4j
 public class CustomOidcUserService extends OidcUserService {
     private final AppUserService appUserService;
-    private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
 
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException{
@@ -28,7 +28,7 @@ public class CustomOidcUserService extends OidcUserService {
         String email = oidcUser.getEmail();
         String name = oidcUser.getFullName();
 
-        Optional<AppUser> existingUser = userRepository.findByEmail(email);
+        Optional<AppUser> existingUser = appUserRepository.findByEmail(email);
 
         if (existingUser.isPresent()){
             log.info("User logged in with email: {}, authenticated by {}", existingUser.get().getEmail(),providerName);
