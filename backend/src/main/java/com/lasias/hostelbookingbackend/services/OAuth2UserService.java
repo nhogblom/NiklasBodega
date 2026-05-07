@@ -24,7 +24,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String providerName = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
 
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
@@ -38,12 +38,12 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         if(existingUser.isPresent()){
             user = existingUser.get();
-            log.info("User logged in with email: {}", user.getEmail());
+            log.info("User logged in with email: {} authenticated by {}", user.getEmail(),providerName);
         }else{
-            AuthProvider authProvider = AuthProvider.valueOf(registrationId.toUpperCase());
+            AuthProvider authProvider = AuthProvider.valueOf(providerName);
             String authProviderId = oAuth2User.getName();
             appUserService.register(name,email,authProviderId,authProvider);
-            log.info("New user registered with email: {}", email);
+            log.info("New user registered with email: {} authenticated by {}", email,providerName);
         }
         return oAuth2User;
     }
