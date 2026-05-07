@@ -35,6 +35,8 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private AuthProvider authProvider;
     private String authProviderId;
+    @OneToMany(mappedBy = "user")
+    private List<BookingEntity> bookings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
