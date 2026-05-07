@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class AppUserController {
 
     private final AppUserService appUserService;
-// todo add endpoints for changing details of a certain user.
+
 
     @PostMapping
     public ResponseEntity<AuthResponseDTO> registerUser(@Valid @RequestBody RegisterNewUserDTO newUser) {
         return ResponseEntity.ok().body(appUserService.register(newUser));
     }
 
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<String> updateUser(@RequestBody UpdateUserDTO updateUserDTO){
         appUserService.updateUser(updateUserDTO);
         return ResponseEntity.ok().build();
