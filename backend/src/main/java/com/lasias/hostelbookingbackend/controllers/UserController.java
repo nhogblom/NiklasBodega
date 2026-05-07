@@ -1,7 +1,7 @@
 package com.lasias.hostelbookingbackend.controllers;
 
 
-import com.lasias.hostelbookingbackend.dtos.AuthResponse;
+import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,17 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register() {
-        // do stuff
-        return ResponseEntity.ok().body(new AuthResponse("korv"));
-    }
-
-    @PostMapping("/password")
-    public ResponseEntity<AuthResponse> changePassword(){
-        // do stuff
-        return ResponseEntity.ok().body(new AuthResponse("korv"));
-    }
+// todo add endpoints for changing details of a certain user.
 
     
 }
