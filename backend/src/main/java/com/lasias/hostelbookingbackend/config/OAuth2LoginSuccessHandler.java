@@ -32,7 +32,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         response.addCookie(cookie);
 
 
-        String frontendUrl = "http://localhost:5173/";
+        String frontendUrl = "http://localhost:5173/oauth2/redirect";
 
         getRedirectStrategy().sendRedirect(request, response, frontendUrl);
     }
