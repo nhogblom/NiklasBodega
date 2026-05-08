@@ -1,9 +1,14 @@
 import axiosInstance from './AxiosConfig.ts';
 
-export const loginUser = async (username: string, password: string) => {
+export const registerUser = async (
+  fullName: string,
+  email: string,
+  password: string,
+) => {
   try {
-    const response = await axiosInstance.post('/api/auth/login', {
-      username,
+    const response = await axiosInstance.post('/api/user/register', {
+      fullName,
+      email,
       password,
     });
     return response.data;
@@ -13,14 +18,9 @@ export const loginUser = async (username: string, password: string) => {
   }
 };
 
-export const registerUser = async (
-  username: string,
-  email: string,
-  password: string,
-) => {
+export const loginUser = async (email: string, password: string) => {
   try {
-    const response = await axiosInstance.post('/api/auth/register', {
-      username,
+    const response = await axiosInstance.post('/api/auth/login', {
       email,
       password,
     });
@@ -33,8 +33,7 @@ export const registerUser = async (
 
 export const logoutUser = async () => {
   try {
-    const response = await axiosInstance.post('/api/auth/logout');
-    return response.data;
+    await axiosInstance.get('/api/auth/logout');
   } catch (error) {
     console.error('Error logging out', error);
     throw error;
