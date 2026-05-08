@@ -1,4 +1,4 @@
-package com.lasias.hostelbookingbackend.models;
+package com.lasias.hostelbookingbackend.enums;
 
 public enum AuthProvider {
     LOCAL,

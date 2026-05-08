@@ -1,4 +1,5 @@
 package com.lasias.hostelbookingbackend.models;
+import com.lasias.hostelbookingbackend.enums.BookingStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 

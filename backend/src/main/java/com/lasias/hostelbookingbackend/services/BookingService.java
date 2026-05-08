@@ -3,7 +3,7 @@ import java.time.LocalDate;import com.lasias.hostelbookingbackend.dtos.UpdateBoo
 import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.models.BookingEntity;
-import com.lasias.hostelbookingbackend.models.BookingStatus;
+import com.lasias.hostelbookingbackend.enums.BookingStatus;
 import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;

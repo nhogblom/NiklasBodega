@@ -1,4 +1,4 @@
-package com.lasias.hostelbookingbackend.util;
+package com.lasias.hostelbookingbackend.enums;
 
 public enum RoomType {
     SINGLE,
