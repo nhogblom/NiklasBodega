@@ -5,21 +5,20 @@ import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
 import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.models.AuthProvider;
-import com.lasias.hostelbookingbackend.models.BookingEntity;
 import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -157,5 +156,21 @@ public class AppUserService {
         }
         log.info("User details retrieved: {}", user.getEmail());
         return new UserInformationDTO(user.getEmail(),user.getName(),user.getRole(),user.getCreatedAt());
+    }
+
+    public ResponseEntity<String> logout() {
+        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user == null){
+            log.error("User not found when logging out");
+            throw new IllegalArgumentException("User not found");
+        }
+        HttpCookie cookie = ResponseCookie.from("jwt","")
+                .path("/")
+                .maxAge(0)
+                .httpOnly(true)
+                .build();
+        SecurityContextHolder.clearContext();
+        log.info("User logged out: {}", user.getEmail());
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString()).build();
     }
 }
