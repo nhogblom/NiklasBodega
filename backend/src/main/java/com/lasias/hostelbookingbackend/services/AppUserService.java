@@ -65,7 +65,7 @@ public class AppUserService {
 
 
     // login user without OAuth2 providers
-    public Cookie loginUser(AuthRequestDTO request) {
+    public ResponseCookie loginUser(AuthRequestDTO request) {
         if (request == null){
             log.error("Local login request is null whe loginUser is called");
             throw new IllegalArgumentException("Request is null");
@@ -168,10 +168,10 @@ public class AppUserService {
             log.error("User not found when logging out");
             throw new IllegalArgumentException("User not found");
         }
-        Cookie cookie = jwtService.createJwtCookie(user.getEmail(),true);
+        ResponseCookie cookie = jwtService.createJwtCookie(user.getEmail(),true);
 
         SecurityContextHolder.clearContext();
         log.info("User logged out: {}", user.getEmail());
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.getName() + '=' + cookie.getValue()).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString()).build();
     }
 }
