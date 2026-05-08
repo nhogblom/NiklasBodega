@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -26,9 +27,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
         String frontendUrl = "http://localhost:5173/oauth2/redirect";
 
-        Cookie cookie = jwtService.createJwtCookie(email, false);
+        Cookie cookie = jwtService.createJwtCookie(email);
         response.addCookie(cookie);
-
         getRedirectStrategy().sendRedirect(request, response, frontendUrl);
     }
 }
