@@ -78,8 +78,10 @@ public class AppUserService {
         }
         AppUser user = appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found."));
         if (validPassword(password, user.getPassword())){
+            log.info("User logged in: {}", user.getEmail());
             return jwtService.createJwtCookie(user.getEmail(),false);
         }
+        log.error("Login failed, invalid credentials");
         throw new IllegalArgumentException("Invalid credentials");
     }
 
@@ -125,6 +127,7 @@ public class AppUserService {
         if (updateUserDTO.password() != null){
             String newPassword = updateUserDTO.password();
             if(!passwordMatchesCriteria(newPassword)){
+                log.error("User did not provide a valid password. Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character");
                 throw new IllegalArgumentException("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character");
             }
             user.setPassword(hashPassword(newPassword));

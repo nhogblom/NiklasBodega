@@ -33,7 +33,7 @@ public class JwtService {
                 .getSubject();
     }
 
-    public Cookie createJwtCookie(String email,boolean logoutCookie){
+    public String createJwtCookie(String email,boolean logoutCookie){
         Cookie cookie = new Cookie("jwt", (logoutCookie ? "" : generateToken(email)));
         cookie.setHttpOnly(true);
         cookie.setPath("/");

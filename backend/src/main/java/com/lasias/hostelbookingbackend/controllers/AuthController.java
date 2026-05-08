@@ -8,6 +8,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO request) {
         Cookie jwtCookie = appUserService.loginUser(request);
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,jwtCookie.toString()).build();
+        HttpCookie cookie = new HttpCookie("jwt", jwtCookie.getValue());
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,jwtCookie.getName() + '=' + jwtCookie.getValue()).build();
     }
 
     // todo meddela ivan att denna flyttar till AppUserController & flytta denna
