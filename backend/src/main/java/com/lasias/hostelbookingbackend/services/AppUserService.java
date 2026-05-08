@@ -53,7 +53,7 @@ public class AppUserService {
             throw new IllegalArgumentException("Email already in use");
         }
         AppUser user = new AppUser();
-        user.setName(newUser.firstName() + " " + newUser.lastName());
+        user.setName(newUser.fullName());
         user.setEmail(newUser.email());
         user.setPassword(hashPassword(newUser.password()));
         user.setRole("USER");
