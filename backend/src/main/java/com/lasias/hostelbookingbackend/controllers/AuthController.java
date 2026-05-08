@@ -5,6 +5,7 @@ import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.services.AppUserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,11 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<UserInformationDTO> provideUserDetails(){
         return ResponseEntity.ok(appUserService.provideUserDetails());
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(){
+        return appUserService.logout();
     }
 
 }

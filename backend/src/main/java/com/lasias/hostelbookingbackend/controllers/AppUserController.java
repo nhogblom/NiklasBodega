@@ -19,7 +19,7 @@ public class AppUserController {
     private final AppUserService appUserService;
 
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<AuthResponseDTO> registerUser(@Valid @RequestBody RegisterNewUserDTO newUser) {
         return ResponseEntity.ok().body(appUserService.register(newUser));
     }
