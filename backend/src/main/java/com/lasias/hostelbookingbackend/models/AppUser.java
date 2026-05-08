@@ -38,7 +38,6 @@ public class AppUser implements UserDetails {
     private AuthProvider authProvider;
     private String authProviderId;
     @OneToMany(mappedBy = "user")
-    @laz
     private List<BookingEntity> bookings;
 
     @Override
