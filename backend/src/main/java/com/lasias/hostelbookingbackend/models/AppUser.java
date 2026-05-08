@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,6 +19,7 @@ import java.util.List;
 @Table(name = "users")
 @Data
 @EntityListeners(AuditingEntityListener.class)
+@ToString(exclude = "bookings")
 public class AppUser implements UserDetails {
 
     @Id
@@ -36,6 +38,7 @@ public class AppUser implements UserDetails {
     private AuthProvider authProvider;
     private String authProviderId;
     @OneToMany(mappedBy = "user")
+    @laz
     private List<BookingEntity> bookings;
 
     @Override
