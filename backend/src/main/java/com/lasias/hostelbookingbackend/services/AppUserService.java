@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.services;
 import com.lasias.hostelbookingbackend.dtos.AuthRequestDTO;
 import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
+import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.models.AuthProvider;
 import com.lasias.hostelbookingbackend.models.BookingEntity;
@@ -32,18 +33,24 @@ public class AppUserService {
 
     // register user through OAuth2 providers
     public void register(String name, String email, String authProviderId,AuthProvider authProvider){
+        if (appUserRepository.findByEmail(email).isPresent()){
+            log.error("Registration failed, email already in use:");
+            throw new IllegalArgumentException("Email already in use");
+        }
         AppUser user = new AppUser();
         user.setName(name);
         user.setEmail(email);
         user.setAuthProvider(authProvider);
         user.setAuthProviderId(authProviderId);
         user.setRole("USER");
+        log.info("New user registered: {}", user.getEmail());
         appUserRepository.save(user);
     }
 
     // register user through user information from the frontend.
     public AuthResponseDTO register(RegisterNewUserDTO newUser){
         if (appUserRepository.findByEmail(newUser.email()).isPresent()){
+            log.error("Registration failed, email already in use:");
             throw new IllegalArgumentException("Email already in use");
         }
         AppUser user = new AppUser();
@@ -52,7 +59,7 @@ public class AppUserService {
         user.setPassword(hashPassword(newUser.password()));
         user.setRole("USER");
         appUserRepository.save(user);
-
+        log.info("New user registered: {}", user.getEmail());
         return new AuthResponseDTO(jwtService.generateToken(user.getEmail()));
     }
 
@@ -60,7 +67,7 @@ public class AppUserService {
     // login user without OAuth2 providers
     public AuthResponseDTO loginUser(AuthRequestDTO request) {
         if (request == null){
-            log.error("Local login request is null");
+            log.error("Local login request is null whe loginUser is called");
             throw new IllegalArgumentException("Request is null");
         }
         String email = request.email();
@@ -99,6 +106,7 @@ public class AppUserService {
     public void updateUser(UpdateUserDTO updateUserDTO) {
         AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user == null){
+            log.error("User not found when updating user");
             throw new IllegalArgumentException("User not found");
         }
         if (updateUserDTO.name() != null){
@@ -109,6 +117,7 @@ public class AppUserService {
         if (updateUserDTO.email() != null){
             String newEmail = updateUserDTO.email();
             if(!isValidEmail(newEmail)){
+                log.error("Invalid email format");
                 throw new IllegalArgumentException("Invalid email format");
             }
             user.setEmail(newEmail);
@@ -120,6 +129,7 @@ public class AppUserService {
             }
             user.setPassword(hashPassword(newPassword));
         }
+        log.info("User updated: {}", user.getEmail());
         appUserRepository.save(user);
 
     }
@@ -127,12 +137,25 @@ public class AppUserService {
     public void deleteMe() {
         AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user == null){
-            throw new IllegalArgumentException("User not found");
+            log.error("Unable to delete user, User not found");
+            throw new IllegalArgumentException("Unable to delete user, User not found");
         }
 
         if(bookingRepository.existsByUser(user)){
-            throw new IllegalArgumentException("User has bookings");
+            log.error("Unable to delete user, User has bookings");
+            throw new IllegalArgumentException("Unable to delete user, User has bookings");
         }
+        log.info("User deleted: {}", user.getEmail());
         appUserRepository.delete(user);
+    }
+
+    public UserInformationDTO provideUserDetails() {
+        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user == null){
+            log.error("User not found when retrieving user details");
+            throw new IllegalArgumentException("User not found");
+        }
+        log.info("User details retrieved: {}", user.getEmail());
+        return new UserInformationDTO(user.getEmail(),user.getName(),user.getRole(),user.getCreatedAt());
     }
 }
