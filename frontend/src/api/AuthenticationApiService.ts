@@ -1,9 +1,14 @@
 import axiosInstance from './AxiosConfig.ts';
 
-export const loginUser = async (username: string, password: string) => {
+export const registerUser = async (
+  fullName: string,
+  email: string,
+  password: string,
+) => {
   try {
-    const response = await axiosInstance.post('/api/auth/login', {
-      username,
+    const response = await axiosInstance.post('/api/user/register', {
+      fullName,
+      email,
       password,
     });
     return response.data;
@@ -13,15 +18,10 @@ export const loginUser = async (username: string, password: string) => {
   }
 };
 
-export const registerUser = async (
-  username: string,
-  fullname: string,
-  password: string,
-) => {
+export const loginUser = async (email: string, password: string) => {
   try {
-    const response = await axiosInstance.post('/api/auth/register', {
-      username,
-      fullname,
+    const response = await axiosInstance.post('/api/auth/login', {
+      email,
       password,
     });
     return response.data;

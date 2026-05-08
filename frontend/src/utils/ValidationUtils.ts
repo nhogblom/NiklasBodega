@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const loginSchema = z.object({
-  username: z
+  email: z
     .email()
-    .min(5, 'Username must be at least 5 characters.')
-    .max(50, "Username can't be longer than 50 characters."),
+    .min(5, 'Email must be at least 5 characters.')
+    .max(50, "Email can't be longer than 50 characters."),
 
   password: z
     .string()
@@ -20,21 +20,22 @@ export const loginSchema = z.object({
 
 export const registerSchema = z
   .object({
-    username: z
+    email: z
       .email()
-      .min(5, 'Username must be at least 5 characters.')
-      .max(50, "Username can't be longer than 50 characters."),
+      .min(5, 'Email must be at least 5 characters.')
+      .max(50, "Email can't be longer than 50 characters."),
 
-    fullname: z
+    fullName: z
       .string()
-      .min(2, 'Username must be at least 3 characters.')
-      .max(50, "Username can't be longer than 50 characters."),
+      .min(5, 'Name must be at least 3 characters.')
+      .max(70, "Name can't be longer than 50 characters."),
 
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters.')
       .max(50, "Password can't be longer than 50 characters.")
       .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
       .regex(/[0-9]/, 'Password must contain at least one number')
       .regex(
         /[!@#$%^&*]/,

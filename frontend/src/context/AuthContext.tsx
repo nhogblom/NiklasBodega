@@ -4,9 +4,9 @@ import { logoutUser } from '../api/AuthenticationApiService.ts';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  username: string | null;
+  email: string | null;
   role: string | null;
-  login: (username: string) => void;
+  login: (email: string) => void;
   logout: () => void;
   isAuthLoading: boolean;
 }
@@ -15,19 +15,19 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState<string | null>(null);
+  const [email, setemail] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  const login = (username: string) => {
+  const login = (email: string) => {
     setIsAuthenticated(true);
-    setUsername(username);
+    setemail(email);
   };
 
   const logout = async () => {
     await logoutUser();
     setIsAuthenticated(false);
-    setUsername(null);
+    setemail(null);
     setRole(null);
   };
 
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     axiosInstance
       .get('/api/auth/me')
       .then((response) => {
-        login(response.data.username);
+        login(response.data.email);
       })
       .catch(() => setIsAuthenticated(false))
       .finally(() => setIsAuthLoading(false));
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, username, role, login, logout, isAuthLoading }}
+      value={{ isAuthenticated, email, role, login, logout, isAuthLoading }}
     >
       {children}
     </AuthContext.Provider>

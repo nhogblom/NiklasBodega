@@ -25,8 +25,8 @@ const LoginPage = () => {
     setError(null);
     setLoading(true);
     try {
-      await loginUser(data.username, data.password);
-      login(data.username);
+      await loginUser(data.email, data.password);
+      login(data.email);
       navigate('/');
     } catch {
       setError('Could not log in');
@@ -72,17 +72,17 @@ const LoginPage = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
               <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
-                Username
+                Email
               </label>
               <input
-                {...register('username')}
+                {...register('email')}
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none text-sm"
               />
-              {errors.username && (
+              {errors.email && (
                 <p className="text-red-500 text-xs mt-1 ml-1">
-                  {errors.username.message}
+                  {errors.email.message}
                 </p>
               )}
             </div>
