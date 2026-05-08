@@ -172,6 +172,6 @@ public class AppUserService {
 
         SecurityContextHolder.clearContext();
         log.info("User logged out: {}", user.getEmail());
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString()).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.getName() + '=' + cookie.getValue()).build();
     }
 }
