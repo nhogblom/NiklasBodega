@@ -1,5 +1,6 @@
 import { createContext, useState, type ReactNode, useEffect } from 'react';
 import axiosInstance from '../api/AxiosConfig.ts';
+import { logoutUser } from '../api/AuthenticationApiService.ts';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -23,7 +24,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUsername(username);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await logoutUser();
     setIsAuthenticated(false);
     setUsername(null);
     setRole(null);
@@ -33,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     axiosInstance
       .get('/api/auth/me')
       .then((response) => {
-        login(response.data.email);
+        login(response.data.username);
       })
       .catch(() => setIsAuthenticated(false))
       .finally(() => setIsAuthLoading(false));

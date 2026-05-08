@@ -33,8 +33,7 @@ export const registerUser = async (
 
 export const logoutUser = async () => {
   try {
-    const response = await axiosInstance.post('/api/auth/logout');
-    return response.data;
+    await axiosInstance.get('/api/auth/logout');
   } catch (error) {
     console.error('Error logging out', error);
     throw error;
