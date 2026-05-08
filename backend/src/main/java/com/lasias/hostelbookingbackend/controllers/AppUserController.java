@@ -4,6 +4,7 @@ package com.lasias.hostelbookingbackend.controllers;
 
 import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
+import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.services.AppUserService;
 import jakarta.validation.Valid;
@@ -28,6 +29,11 @@ public class AppUserController {
     public ResponseEntity<String> updateUser(@RequestBody UpdateUserDTO updateUserDTO){
         appUserService.updateUser(updateUserDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserInformationDTO> provideUserDetails(){
+        return ResponseEntity.ok(appUserService.provideUserDetails());
     }
 
     @DeleteMapping

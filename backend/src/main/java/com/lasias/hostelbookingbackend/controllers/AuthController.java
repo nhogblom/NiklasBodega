@@ -25,11 +25,7 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,jwtCookie.getName() + '=' + jwtCookie.getValue()).build();
     }
 
-    // todo meddela ivan att denna flyttar till AppUserController & flytta denna
-    @GetMapping("/me")
-    public ResponseEntity<UserInformationDTO> provideUserDetails(){
-        return ResponseEntity.ok(appUserService.provideUserDetails());
-    }
+
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout(){
