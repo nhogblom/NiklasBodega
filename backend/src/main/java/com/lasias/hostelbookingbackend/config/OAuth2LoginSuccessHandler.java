@@ -1,6 +1,7 @@
 package com.lasias.hostelbookingbackend.config;
 
 import com.lasias.hostelbookingbackend.services.JwtService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,15 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         if (email == null){
             email = oAuth2User.getAttribute("login") + "@github.com";
         }
+        Cookie cookie = new Cookie("jwt", jwtService.generateToken(email));
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setSecure(false); // todo sätt till true när vi kör https.
+        response.addCookie(cookie);
 
-        String token = jwtService.generateToken(email);
 
-        String frontendUrl = "http://localhost:5173/oauth2/redirect?token="+token;
+        String frontendUrl = "http://localhost:5173/";
 
         getRedirectStrategy().sendRedirect(request, response, frontendUrl);
     }
