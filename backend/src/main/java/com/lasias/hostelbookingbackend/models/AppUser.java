@@ -1,5 +1,6 @@
 package com.lasias.hostelbookingbackend.models;
 
+import com.lasias.hostelbookingbackend.enums.AuthProvider;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;

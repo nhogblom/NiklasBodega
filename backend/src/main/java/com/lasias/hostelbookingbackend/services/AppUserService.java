@@ -4,7 +4,7 @@ import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
 import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.models.AppUser;
-import com.lasias.hostelbookingbackend.models.AuthProvider;
+import com.lasias.hostelbookingbackend.enums.AuthProvider;
 import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;

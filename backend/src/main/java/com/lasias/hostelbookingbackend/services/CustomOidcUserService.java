@@ -1,7 +1,7 @@
 package com.lasias.hostelbookingbackend.services;
 
 import com.lasias.hostelbookingbackend.models.AppUser;
-import com.lasias.hostelbookingbackend.models.AuthProvider;
+import com.lasias.hostelbookingbackend.enums.AuthProvider;
 import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
