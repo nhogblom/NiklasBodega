@@ -2,19 +2,16 @@ package com.lasias.hostelbookingbackend.controllers;
 
 import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.services.RoomService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-// @reqargumentsconst
+@RequiredArgsConstructor
 @RequestMapping("/api/rooms")
 public class RoomController {
     private final RoomService roomService;
-
-    public RoomController(RoomService roomService) {
-        this.roomService = roomService;
-    }
 
     @GetMapping
     public List<RoomEntity> getRooms() {
