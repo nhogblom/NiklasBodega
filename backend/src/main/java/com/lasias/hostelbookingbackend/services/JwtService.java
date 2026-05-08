@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.services;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,14 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public Cookie createJwtCookie(String email,boolean logoutCookie){
+        Cookie cookie = new Cookie("jwt", (logoutCookie ? "" : generateToken(email)));
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(logoutCookie ? (60 * 60 * 24) : 0);
+        cookie.setSecure(false); // todo sätt till true när vi kör https.
+        return cookie;
     }
 }

@@ -8,6 +8,7 @@ import com.lasias.hostelbookingbackend.models.AuthProvider;
 import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpCookie;
@@ -164,11 +165,8 @@ public class AppUserService {
             log.error("User not found when logging out");
             throw new IllegalArgumentException("User not found");
         }
-        HttpCookie cookie = ResponseCookie.from("jwt","")
-                .path("/")
-                .maxAge(0)
-                .httpOnly(true)
-                .build();
+        Cookie cookie = jwtService.createJwtCookie(user.getEmail(),true);
+
         SecurityContextHolder.clearContext();
         log.info("User logged out: {}", user.getEmail());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString()).build();
