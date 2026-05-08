@@ -1,4 +1,5 @@
-import { createContext, useState, type ReactNode } from 'react';
+import { createContext, useState, type ReactNode, useEffect } from 'react';
+import axiosInstance from '../api/AxiosConfig.ts';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -6,6 +7,7 @@ interface AuthContextType {
   role: string | null;
   login: (username: string) => void;
   logout: () => void;
+  isAuthLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -14,7 +16,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
-  // const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const login = (username: string) => {
     setIsAuthenticated(true);
@@ -27,9 +29,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRole(null);
   };
 
+  useEffect(() => {
+    axiosInstance
+      .get('/api/auth/me')
+      .then((response) => {
+        login(response.data.email);
+      })
+      .catch(() => setIsAuthenticated(false))
+      .finally(() => setIsAuthLoading(false));
+  }, []);
+
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, username, role, login, logout }}
+      value={{ isAuthenticated, username, role, login, logout, isAuthLoading }}
     >
       {children}
     </AuthContext.Provider>

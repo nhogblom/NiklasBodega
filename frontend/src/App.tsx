@@ -17,7 +17,18 @@ import RoomsPage from './pages/RoomsPage.tsx';
 import OAuthRedirectPage from './pages/OAuthRedirectPage.tsx';
 
 const ProtectedRoute = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAuthLoading } = useAuth();
+
+  if (isAuthLoading) {
+    return (
+      <div className="min-h-screen bg-stone-100 flex items-center justify-center">
+        <p className="text-stone-400 text-sm uppercase tracking-widest">
+          Loading...
+        </p>
+      </div>
+    );
+  }
+
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
 

@@ -11,7 +11,8 @@ const OAuthRedirectPage = () => {
     axiosInstance
       .get('/api/auth/me')
       .then((response) => {
-        login(response.data.username);
+        login(response.data.email);
+        console.log(`User ${response.data.name} is logged in`);
         navigate('/');
       })
       .catch(() => navigate('/login'));
