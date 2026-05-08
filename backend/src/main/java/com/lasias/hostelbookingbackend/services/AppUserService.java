@@ -8,6 +8,7 @@ import com.lasias.hostelbookingbackend.enums.AuthProvider;
 import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpCookie;
@@ -64,7 +65,7 @@ public class AppUserService {
 
 
     // login user without OAuth2 providers
-    public AuthResponseDTO loginUser(AuthRequestDTO request) {
+    public Cookie loginUser(AuthRequestDTO request) {
         if (request == null){
             log.error("Local login request is null whe loginUser is called");
             throw new IllegalArgumentException("Request is null");
@@ -75,15 +76,15 @@ public class AppUserService {
             log.error("Login failed, email and password are required");
             throw new IllegalArgumentException("Email and password are required");
         }
-        AppUser user = appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        AppUser user = appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found."));
         if (validPassword(password, user.getPassword())){
-            return new AuthResponseDTO(jwtService.generateToken(user.getEmail()));
+            return jwtService.createJwtCookie(user.getEmail(),false);
         }
         throw new IllegalArgumentException("Invalid credentials");
     }
 
     public boolean validPassword(String password, String hashedPassword){
-        return hashPassword(password).equals(hashedPassword);
+        return passwordEncoder.matches(password, hashedPassword);
     }
 
     public boolean passwordMatchesCriteria(String password){
@@ -164,11 +165,8 @@ public class AppUserService {
             log.error("User not found when logging out");
             throw new IllegalArgumentException("User not found");
         }
-        HttpCookie cookie = ResponseCookie.from("jwt","")
-                .path("/")
-                .maxAge(0)
-                .httpOnly(true)
-                .build();
+        Cookie cookie = jwtService.createJwtCookie(user.getEmail(),true);
+
         SecurityContextHolder.clearContext();
         log.info("User logged out: {}", user.getEmail());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString()).build();
