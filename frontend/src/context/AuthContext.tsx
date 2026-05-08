@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     axiosInstance
-      .get('/api/auth/me')
+      .get('/api/user')
       .then((response) => {
         login(response.data.email);
       })

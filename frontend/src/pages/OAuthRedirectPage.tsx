@@ -9,7 +9,7 @@ const OAuthRedirectPage = () => {
 
   useEffect(() => {
     axiosInstance
-      .get('/api/auth/me')
+      .get('/api/user')
       .then((response) => {
         login(response.data.email);
         console.log(`User ${response.data.name} is logged in`);
