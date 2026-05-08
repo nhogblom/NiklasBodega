@@ -22,7 +22,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO request) {
         Cookie jwtCookie = appUserService.loginUser(request);
-        HttpCookie cookie = new HttpCookie("jwt", jwtCookie.getValue());
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,jwtCookie.getName() + '=' + jwtCookie.getValue()).build();
     }
 
