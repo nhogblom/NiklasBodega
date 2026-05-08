@@ -1,5 +1,6 @@
 package com.lasias.hostelbookingbackend.controllers;
 
+import com.lasias.hostelbookingbackend.services.RoomService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +10,10 @@ import java.util.List;
 @RequestMapping("/api/rooms")
 public class RoomController {
     private final RoomService roomService;
+
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
+    }
 
     @GetMapping
     public List<Room> getRooms() {
