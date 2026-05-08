@@ -18,7 +18,7 @@ public class RoomController {
         return roomService.getRooms();
     }
 
-    @GetMapping
+    @GetMapping("/user")
     public List<RoomEntity> getRoomsByUser() {
         return roomService.getRooms();
     }
