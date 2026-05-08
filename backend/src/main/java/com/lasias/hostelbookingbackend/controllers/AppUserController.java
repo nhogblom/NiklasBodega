@@ -31,7 +31,7 @@ public class AppUserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/me")
+    @GetMapping
     public ResponseEntity<UserInformationDTO> provideUserDetails(){
         return ResponseEntity.ok(appUserService.provideUserDetails());
     }
