@@ -1,4 +1,8 @@
 package com.lasias.hostelbookingbackend.models;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import com.lasias.hostelbookingbackend.util.RoomType;
 import jakarta.persistence.*;
@@ -6,6 +10,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "rooms")
 public class RoomEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,6 +19,11 @@ public class RoomEntity {
     private RoomType roomType;
     private boolean extraBed;
 
+    public RoomEntity(){}
+
+    public RoomEntity(int roomNumber){
+        this.roomNumber = roomNumber;
+    }
     public void setId(Long id) {
         this.id = id;
     }
