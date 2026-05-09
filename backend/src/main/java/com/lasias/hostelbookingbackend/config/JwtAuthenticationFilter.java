@@ -33,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Cookie jwtCookie = cookies != null ? Arrays.stream(cookies).filter(cookie -> cookie.getName().equals("jwt")).findFirst().orElse(null) : null;
 
         if (jwtCookie == null){
+            log.info("No JWT cookie found when authenticating user");
             filterChain.doFilter(request, response);
             return;
         }
