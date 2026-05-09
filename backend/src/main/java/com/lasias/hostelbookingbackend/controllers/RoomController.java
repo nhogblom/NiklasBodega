@@ -24,8 +24,8 @@ public class RoomController {
     }
 
     @PostMapping
-    public List<RoomEntity> addRoom(@RequestBody RoomEntity room) {
-        return roomService.addRoom(room);
+    public void addRoom(@RequestBody RoomEntity room) {
+        roomService.addRoom(room);
     }
 
     @GetMapping("/{id}")
@@ -34,12 +34,12 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
-    public List<RoomEntity> updateRoom(@PathVariable Long id, @RequestBody RoomEntity updatedRoom) {
-        return roomService.updateRoom(id, updatedRoom);
+    public void updateRoom(@PathVariable Long id, @RequestBody RoomEntity updatedRoom) {
+        roomService.updateRoom(id, updatedRoom);
     }
 
     @DeleteMapping("/{id}")
-    public List<RoomEntity> deleteRoom(@PathVariable Long id) {
-        return roomService.deleteRoom(id);
+    public void deleteRoom(@PathVariable Long id) {
+        roomService.deleteRoom(id);
     }
 }
