@@ -18,14 +18,14 @@ public class RoomController {
         return roomService.getRooms();
     }
 
-    @GetMapping("/user")
-    public List<RoomEntity> getRoomsByUser() {
-        return roomService.getRooms();
-    }
-
     @PostMapping
     public void addRoom(@RequestBody RoomEntity room) {
         roomService.addRoom(room);
+    }
+
+    @GetMapping("/user")
+    public List<RoomEntity> getRoomsByUser() {
+        return roomService.getRooms();
     }
 
     @GetMapping("/{id}")
