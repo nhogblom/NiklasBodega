@@ -3,14 +3,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import com.lasias.hostelbookingbackend.enums.RoomType;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
-@RequiredArgsConstructor
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 @Table(name = "rooms")
 public class RoomEntity {
 
@@ -20,7 +21,9 @@ public class RoomEntity {
 
     @Column(unique = true, nullable = false)
     private int roomNumber;
-    @Column(nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "room_type_id")
     private RoomType roomType;
     private boolean extraBed;
 }
