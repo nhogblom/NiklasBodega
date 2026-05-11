@@ -1,10 +1,8 @@
 package com.lasias.hostelbookingbackend.controllers;
 
 import com.lasias.hostelbookingbackend.dtos.RoomDTO;
-import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.services.RoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +14,22 @@ public class RoomController {
     private final RoomService roomService;
 
     @GetMapping
-    public ResponseEntity<List<RoomEntity>> getRooms() {
-        return ResponseEntity.ok(roomService.getRooms());
+    public List<RoomDTO> getRooms() {
+        return roomService.getRooms();
     }
 
     @PostMapping
-    public void addRoom(@RequestBody RoomDTO room) {
-        roomService.addRoom(room);
+    public RoomDTO addRoom(@RequestBody RoomDTO room) {
+        return roomService.addRoom(room);
     }
 
     @GetMapping("/user")
-    public List<RoomEntity> getRoomsByUser() {
+    public List<RoomDTO> getRoomsByUser() {
         return roomService.getRooms();
     }
 
     @GetMapping("/{id}")
-    public RoomEntity getRoom(@PathVariable Long id) {
+    public RoomDTO getRoom(@PathVariable Long id) {
         return roomService.getRoomsById(id);
     }
 
@@ -41,7 +39,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRoom(@PathVariable Long id) {
-        roomService.deleteRoom(id);
+    public RoomDTO deleteRoom(@PathVariable Long id) {
+        return roomService.deleteRoom(id);
     }
 }

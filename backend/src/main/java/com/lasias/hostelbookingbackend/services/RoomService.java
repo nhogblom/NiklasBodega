@@ -14,17 +14,16 @@ import java.util.List;
 public class RoomService {
     private final RoomRepository roomRepository;
 
-    public List<RoomEntity> getRooms() {
-        return roomRepository.findAll();
+    public List<RoomDTO> getRooms() {
+        return roomRepository.findAll().stream().map(this::roomToRoomDTO).toList();
     }
 
     public RoomDTO addRoom(RoomDTO room) {
         return roomToRoomDTO(roomRepository.save(roomToRoomEntity(room)));
     }
 
-    public RoomEntity getRoomsById(Long id) {
-        return roomRepository.findAll().stream().filter(room -> room.getId().equals(id)).findFirst().
-                orElse(null);
+    public RoomDTO getRoomsById(Long id) {
+        return roomToRoomDTO(roomRepository.findById(id).orElseThrow(RoomNotFoundException::new));
     }
 
     public RoomDTO updateRoom(Long id, RoomDTO roomRequestDTO) {
@@ -51,7 +50,9 @@ public class RoomService {
                 .build();
     }
 
-    public void deleteRoom(Long id) {
+    public RoomDTO deleteRoom(Long id) {
+        RoomDTO deletedRoom = roomToRoomDTO(roomRepository.findById(id).orElseThrow(RoomNotFoundException::new));
         roomRepository.deleteById(id);
+        return deletedRoom;
     }
 }
