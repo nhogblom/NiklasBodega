@@ -1,7 +1,6 @@
 package com.lasias.hostelbookingbackend.services;
 
 import com.lasias.hostelbookingbackend.dtos.RoomDTO;
-import com.lasias.hostelbookingbackend.dtos.RoomRequestDTO;
 import com.lasias.hostelbookingbackend.exceptions.RoomNotFoundException;
 import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.repositories.RoomRepository;
