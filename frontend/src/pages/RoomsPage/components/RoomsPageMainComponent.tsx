@@ -1,9 +1,12 @@
 import Navbar from '../../../components/Navbar.tsx';
 import RoomCard from './RoomCard.tsx';
-import featuredRoom from './FeaturedRoom.tsx';
 import FeaturedRoom from './FeaturedRoom.tsx';
+import type { Room } from '../../../types/Room.ts';
 
-const RoomsPageMainComponent = () => {
+const RoomsPageMainComponent = ({ rooms }: { rooms: Room[] }) => {
+  const featuredRoom = rooms.find((r) => r.featured);
+  const regularRooms = rooms.filter((r) => !r.featured);
+
   return (
     <div className="min-h-screen bg-stone-100">
       <Navbar />
@@ -37,7 +40,7 @@ const RoomsPageMainComponent = () => {
         <div className="flex flex-col gap-6">
           {featuredRoom && <FeaturedRoom room={featuredRoom} />}
           <div className="grid md:grid-cols-3 gap-6">
-            {regularRooms.map((room) => (
+            {regularRooms?.map((room) => (
               <RoomCard key={room.id} room={room} />
             ))}
           </div>

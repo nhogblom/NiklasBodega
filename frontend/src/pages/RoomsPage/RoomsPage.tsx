@@ -89,6 +89,6 @@ const RoomsPage = () => {
       </div>
     );
   }
-  return <RoomsPageMainComponent />;
+  return <RoomsPageMainComponent rooms={rooms} />;
 };
 export default RoomsPage;
