@@ -1,5 +1,7 @@
 import type { Room } from '../types/Room.ts';
 import Navbar from '../components/Navbar.tsx';
+import { useEffect, useState } from 'react';
+import { getAllRooms } from '../api/RoomApiService.ts';
 
 const rooms: Room[] = [
   {
@@ -145,8 +147,41 @@ const FeaturedRoom = ({ room }: { room: Room }) => (
 );
 
 const RoomsPage = () => {
-  const featuredRoom = rooms.find((r) => r.featured);
-  const regularRooms = rooms.filter((r) => !r.featured);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const allRooms = await getAllRooms();
+        setRooms(allRooms);
+      } catch {
+        setError('Failed loading rooms.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRooms();
+  }, []);
+
+  if (loading)
+    return (
+      <div className="min-h-screen bg-stone-100 flex items-center justify-center">
+        <p className="text-stone-400 text-sm uppercase tracking-widest">
+          Loading rooms...
+        </p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="min-h-screen bg-stone-100 flex items-center justify-center">
+        <p className="text-red-400 text-sm uppercase tracking-widest">
+          {error}
+        </p>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-stone-100">
