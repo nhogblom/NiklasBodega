@@ -3,6 +3,7 @@ package com.lasias.hostelbookingbackend.controllers;
 import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.services.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class RoomController {
     private final RoomService roomService;
 
     @GetMapping
-    public List<RoomEntity> getRooms() {
-        return roomService.getRooms();
+    public ResponseEntity<List<RoomEntity>> getRooms() {
+        return ResponseEntity.ok(roomService.getRooms());
     }
 
     @PostMapping

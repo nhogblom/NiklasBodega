@@ -4,12 +4,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
-@RequiredArgsConstructor
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 @Table(name = "rooms")
 public class RoomEntity {
 
@@ -21,7 +23,7 @@ public class RoomEntity {
     private int roomNumber;
 
     @ManyToOne
-    @JoinColumn(name = "roomTypeId")
+    @JoinColumn(name = "room_type_id")
     private RoomType roomType;
     private boolean extraBed;
 }

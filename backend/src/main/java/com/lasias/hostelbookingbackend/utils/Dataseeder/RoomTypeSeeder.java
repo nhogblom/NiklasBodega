@@ -1,4 +1,4 @@
-package com.lasias.hostelbookingbackend.utils;
+package com.lasias.hostelbookingbackend.utils.Dataseeder;
 
 import com.lasias.hostelbookingbackend.enums.RoomBadge;
 import com.lasias.hostelbookingbackend.models.RoomType;
@@ -6,6 +6,7 @@ import com.lasias.hostelbookingbackend.repositories.RoomTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-public class DataSeeder implements CommandLineRunner {
+@Order(1)
+public class RoomTypeSeeder implements CommandLineRunner {
 
     private final RoomTypeRepository roomTypeRepository;
 
@@ -21,7 +23,7 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (roomTypeRepository.count() == 0) {
             roomTypeRepository.saveAll(roomTypesToAdd());
-            log.info("Succesfully added ", roomTypesToAdd().size() + " roomTypes.");
+            log.info("Succesfully added {} roomTypes.",roomTypesToAdd().size());
         } else {
             log.info("Room Types already exists in database");
         }
