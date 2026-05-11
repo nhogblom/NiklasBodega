@@ -19,7 +19,9 @@ public class RoomEntity {
 
     @Column(unique = true, nullable = false)
     private int roomNumber;
-    @Column(nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
     private boolean extraBed;
 }

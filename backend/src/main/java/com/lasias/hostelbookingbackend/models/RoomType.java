@@ -1,9 +1,16 @@
 package com.lasias.hostelbookingbackend.models;
 
+import com.lasias.hostelbookingbackend.enums.RoomBadge;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "RoomType")
+@RequiredArgsConstructor
+@Getter
+@Setter
 public class RoomType {
 
     @Id
@@ -16,7 +23,10 @@ public class RoomType {
     Double price;
     Integer size;
     Integer capacity;
-    String badge;
+
+    @Enumerated(EnumType.STRING)
+    RoomBadge badge;
+
     boolean featured;
     String imageUrl;
 
