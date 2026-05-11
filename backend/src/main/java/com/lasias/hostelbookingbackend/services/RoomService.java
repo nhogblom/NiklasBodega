@@ -1,11 +1,13 @@
 package com.lasias.hostelbookingbackend.services;
 
+import com.lasias.hostelbookingbackend.dtos.RoomDTO;
+import com.lasias.hostelbookingbackend.dtos.RoomRequestDTO;
+import com.lasias.hostelbookingbackend.exceptions.RoomNotFoundException;
 import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.repositories.RoomRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.List;
 
 @Service
@@ -17,8 +19,8 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public void addRoom(RoomEntity room) {
-        roomRepository.save(room);
+    public RoomDTO addRoom(RoomDTO room) {
+        return roomToRoomDTO(roomRepository.save(roomToRoomEntity(room)));
     }
 
     public RoomEntity getRoomsById(Long id) {
@@ -26,16 +28,28 @@ public class RoomService {
                 orElse(null);
     }
 
-    public void updateRoom(Long id, RoomEntity updatedRoom) {
-        RoomEntity roomToUpdate = roomRepository.findAll().stream().filter(room -> room.getId().equals(id)).
-                findFirst().orElse(null);
-        if (roomToUpdate == null) {
-            roomRepository.save(updatedRoom);
-        }else {
-            roomToUpdate.setRoomNumber(updatedRoom.getRoomNumber());
-            roomToUpdate.setRoomType(updatedRoom.getRoomType());
-            roomToUpdate.setExtraBed(updatedRoom.isExtraBed());
-        }
+    public RoomDTO updateRoom(Long id, RoomDTO roomRequestDTO) {
+        RoomEntity room = roomRepository.findById(id).orElseThrow(RoomNotFoundException::new);
+        room.setRoomNumber(roomRequestDTO.getRoomNumber());
+        room.setRoomType(roomRequestDTO.getRoomType());
+        room.setExtraBed(roomRequestDTO.isExtraBed());
+        return roomToRoomDTO(room);
+    }
+
+    private RoomDTO roomToRoomDTO(RoomEntity room) {
+        return RoomDTO.builder()
+                .roomNumber(room.getRoomNumber())
+                .roomType(room.getRoomType())
+                .extraBed(room.isExtraBed())
+                .build();
+    }
+
+    private RoomEntity roomToRoomEntity(RoomDTO roomRequestDTO) {
+        return RoomEntity.builder()
+                .roomNumber(roomRequestDTO.getRoomNumber())
+                .roomType(roomRequestDTO.getRoomType())
+                .extraBed(roomRequestDTO.isExtraBed())
+                .build();
     }
 
     public void deleteRoom(Long id) {

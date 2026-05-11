@@ -20,7 +20,7 @@ public class RoomEntity {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private int roomNumber;
+    private Long roomNumber;
 
     @ManyToOne
     @JoinColumn(name = "room_type_id")

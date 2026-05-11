@@ -1,5 +1,6 @@
 package com.lasias.hostelbookingbackend.controllers;
 
+import com.lasias.hostelbookingbackend.dtos.RoomDTO;
 import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.services.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class RoomController {
     }
 
     @PostMapping
-    public void addRoom(@RequestBody RoomEntity room) {
+    public void addRoom(@RequestBody RoomDTO room) {
         roomService.addRoom(room);
     }
 
@@ -35,8 +36,8 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
-    public void updateRoom(@PathVariable Long id, @RequestBody RoomEntity updatedRoom) {
-        roomService.updateRoom(id, updatedRoom);
+    public RoomDTO updateRoom(@PathVariable Long id, @RequestBody RoomDTO roomDTO) {
+        return roomService.updateRoom(id, roomDTO);
     }
 
     @DeleteMapping("/{id}")
