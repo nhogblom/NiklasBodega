@@ -39,23 +39,23 @@ public class RoomSeeder implements CommandLineRunner {
 
         return List.of(
                 RoomEntity.builder()
-                        .roomNumber(11)
+                        .roomNumber(11L)
                         .roomType(lux)
                         .extraBed(true)
                         .build(),
 
                 RoomEntity.builder()
-                        .roomNumber(22)
+                        .roomNumber(22L)
                         .roomType(single)
                         .extraBed(true)
                         .build(),
                 RoomEntity.builder()
-                        .roomNumber(33)
+                        .roomNumber(33L)
                         .roomType(doubleRoom)
                         .extraBed(true)
                         .build(),
                 RoomEntity.builder()
-                        .roomNumber(44)
+                        .roomNumber(44L)
                         .roomType(family)
                         .extraBed(true)
                         .build()
