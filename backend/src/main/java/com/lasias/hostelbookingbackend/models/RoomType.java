@@ -2,13 +2,13 @@ package com.lasias.hostelbookingbackend.models;
 
 import com.lasias.hostelbookingbackend.enums.RoomBadge;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "RoomType")
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Setter
 public class RoomType {
@@ -16,7 +16,6 @@ public class RoomType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     String name;
     String type;
     String description;
