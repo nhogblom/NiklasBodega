@@ -36,6 +36,7 @@ public class RoomService {
 
     private RoomDTO roomToRoomDTO(RoomEntity room) {
         return RoomDTO.builder()
+                .id(room.getId())
                 .roomNumber(room.getRoomNumber())
                 .roomType(room.getRoomType())
                 .extraBed(room.isExtraBed())

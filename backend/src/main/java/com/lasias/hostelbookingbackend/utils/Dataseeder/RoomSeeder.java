@@ -39,8 +39,8 @@ public class RoomSeeder implements CommandLineRunner {
 
         return List.of(
                 RoomEntity.builder()
-                        .roomNumber(11L)
-                        .roomType(lux)
+                        .roomNumber(21L)
+                        .roomType(single)
                         .extraBed(true)
                         .build(),
 
@@ -49,17 +49,55 @@ public class RoomSeeder implements CommandLineRunner {
                         .roomType(single)
                         .extraBed(true)
                         .build(),
+
+                RoomEntity.builder()
+                        .roomNumber(23L)
+                        .roomType(single)
+                        .extraBed(true)
+                        .build(),
+
+                RoomEntity.builder()
+                        .roomNumber(24L)
+                        .roomType(single)
+                        .extraBed(true)
+                        .build(),
+
+                RoomEntity.builder()
+                        .roomNumber(31L)
+                        .roomType(doubleRoom)
+                        .extraBed(true)
+                        .build(),
+
+                RoomEntity.builder()
+                        .roomNumber(32L)
+                        .roomType(doubleRoom)
+                        .extraBed(true)
+                        .build(),
+
                 RoomEntity.builder()
                         .roomNumber(33L)
                         .roomType(doubleRoom)
                         .extraBed(true)
                         .build(),
+
                 RoomEntity.builder()
-                        .roomNumber(44L)
+                        .roomNumber(34L)
+                        .roomType(doubleRoom)
+                        .extraBed(true)
+                        .build(),
+
+                RoomEntity.builder()
+                        .roomNumber(42L)
                         .roomType(family)
                         .extraBed(true)
+                        .build(),
+
+                RoomEntity.builder()
+                        .roomNumber(41L)
+                        .roomType(lux)
+                        .extraBed(true)
                         .build()
-        );
+                );
     }
 
 
