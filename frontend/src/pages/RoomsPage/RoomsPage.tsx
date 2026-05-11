@@ -1,7 +1,10 @@
-import type { Room } from '../types/Room.ts';
-import Navbar from '../components/Navbar.tsx';
+import type { Room } from '../../types/Room.ts';
+import Navbar from '../../components/Navbar.tsx';
 import { useEffect, useState } from 'react';
-import { getAllRooms } from '../api/RoomApiService.ts';
+import { getAllRooms } from '../../api/RoomApiService.ts';
+import LoadingRooms from './components/LoadingRooms.tsx';
+import LoadingMessage from '../../components/LoadingMessage.tsx';
+import ErrorMessage from '../../components/ErrorMessage.tsx';
 
 const rooms: Room[] = [
   {
@@ -165,24 +168,15 @@ const RoomsPage = () => {
     fetchRooms();
   }, []);
 
-  if (loading)
+  if (loading) return <LoadingMessage message={'Loading rooms...'} />;
+
+  if (error) {
     return (
       <div className="min-h-screen bg-stone-100 flex items-center justify-center">
-        <p className="text-stone-400 text-sm uppercase tracking-widest">
-          Loading rooms...
-        </p>
+        <ErrorMessage message={error} />
       </div>
     );
-
-  if (error)
-    return (
-      <div className="min-h-screen bg-stone-100 flex items-center justify-center">
-        <p className="text-red-400 text-sm uppercase tracking-widest">
-          {error}
-        </p>
-      </div>
-    );
-
+  }
   return (
     <div className="min-h-screen bg-stone-100">
       <Navbar />

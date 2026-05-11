@@ -13,7 +13,7 @@ import { useAuth } from './hooks/useAuth.tsx';
 import MyBookingsPage from './pages/MyBookingsPage.tsx';
 import NewBookingsPage from './pages/NewBookingsPage.tsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.tsx';
-import RoomsPage from './pages/RoomsPage.tsx';
+import RoomsPage from './pages/RoomsPage/RoomsPage.tsx';
 import OAuthRedirectPage from './pages/OAuthRedirectPage.tsx';
 
 const ProtectedRoute = () => {
