@@ -3,6 +3,7 @@ package com.lasias.hostelbookingbackend.controllers;
 import com.lasias.hostelbookingbackend.dtos.RoomDTO;
 import com.lasias.hostelbookingbackend.services.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class RoomController {
     }
 
     @PostMapping
+    @PreAuthorize( "hasRole('ADMIN')")
     public RoomDTO addRoom(@RequestBody RoomDTO room) {
         return roomService.addRoom(room);
     }
@@ -34,11 +36,13 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize( "hasRole('ADMIN')")
     public RoomDTO updateRoom(@PathVariable Long id, @RequestBody RoomDTO roomDTO) {
         return roomService.updateRoom(id, roomDTO);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize( "hasRole('ADMIN')")
     public RoomDTO deleteRoom(@PathVariable Long id) {
         return roomService.deleteRoom(id);
     }
