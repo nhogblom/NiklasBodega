@@ -28,10 +28,8 @@ public class BookingService {
         this.roomRepository = roomRepository;
     }
 
-    public BookingResponseDTO createBooking(CreateBookingRequestDTO request) {
+    public BookingResponseDTO createBooking(CreateBookingRequestDTO request, AppUser user) {
         validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
-        AppUser user = appUserRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         RoomEntity room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new RuntimeException("Room not found"));
