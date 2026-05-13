@@ -5,23 +5,25 @@ const FeaturedRoom = ({ room }: { room: Room }) => {
   return (
     <div className="bg-white rounded-xl border border-stone-200 overflow-hidden grid md:grid-cols-2">
       <img
-        src={room.imageUrl}
-        alt={room.name}
+        src={room.roomType.imageUrl}
+        alt={room.roomType.name}
         className="w-full h-full min-h-[280px] object-cover"
       />
       <div className="p-8 flex flex-col justify-center">
         <span
-          className={`inline-block text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full mb-4 w-fit ${badgeStyles[room.badge]}`}
+          className={`inline-block text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full mb-4 w-fit ${badgeStyles[room.roomType.badge]}`}
         >
-          {room.type}
+          {room.roomType.type}
         </span>
-        <h3 className="font-serif text-2xl text-stone-800 mb-2">{room.name}</h3>
+        <h3 className="font-serif text-2xl text-stone-800 mb-2">
+          {room.roomType.name}
+        </h3>
         <p className="text-sm text-stone-500 leading-relaxed mb-6">
-          {room.description}
+          {room.roomType.description}
         </p>
         <div className="flex gap-4 text-xs text-stone-500 mb-6">
-          <span>{room.size} m²</span>
-          <span>Up to {room.capacity} guests</span>
+          <span>{room.roomType.size} m²</span>
+          <span>Up to {room.roomType.capacity} guests</span>
           <span>Private terrace</span>
           <span>WiFi included</span>
         </div>
@@ -31,7 +33,7 @@ const FeaturedRoom = ({ room }: { room: Room }) => {
               From
             </p>
             <p className="text-xl font-bold text-orange-900">
-              €{room.price}{' '}
+              €{room.roomType.price}{' '}
               <span className="text-xs font-normal text-stone-400">
                 / night
               </span>

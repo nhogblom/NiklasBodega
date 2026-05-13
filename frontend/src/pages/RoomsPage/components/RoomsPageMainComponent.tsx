@@ -4,12 +4,12 @@ import FeaturedRoom from './FeaturedRoom.tsx';
 import type { Room } from '../../../types/Room.ts';
 
 const RoomsPageMainComponent = ({ rooms }: { rooms: Room[] }) => {
-  const featuredRoom = rooms.find((r) => r.featured);
-  const regularRooms = rooms.filter((r) => !r.featured);
+  const featuredRoom = rooms.find((r) => r.roomType.featured);
+  const regularRooms = rooms.filter((r) => !r.roomType.featured);
 
   const uniqueRoomsByType = Array.from(
-  new Map(regularRooms?.map(room => [room.roomType.type, room])).values()
-);
+    new Map(regularRooms?.map((room) => [room.roomType.type, room])).values(),
+  );
 
   return (
     <div className="min-h-screen bg-stone-100">
@@ -44,11 +44,9 @@ const RoomsPageMainComponent = ({ rooms }: { rooms: Room[] }) => {
         <div className="flex flex-col gap-6">
           {featuredRoom && <FeaturedRoom room={featuredRoom} />}
           <div className="grid md:grid-cols-3 gap-6">
-            {uniqueRoomsByType
-            .map((room) => (
-            <RoomCard key={room.id} room={room} />
-          ))
-          }
+            {uniqueRoomsByType.map((room) => (
+              <RoomCard key={room.id} room={room} />
+            ))}
           </div>
         </div>
       </div>
