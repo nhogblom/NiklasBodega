@@ -2,7 +2,9 @@ package com.lasias.hostelbookingbackend.models;
 
 import com.lasias.hostelbookingbackend.enums.AuthProvider;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -21,6 +23,7 @@ import java.util.List;
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @ToString(exclude = "bookings")
+@RequiredArgsConstructor
 public class AppUser implements UserDetails {
 
     @Id
