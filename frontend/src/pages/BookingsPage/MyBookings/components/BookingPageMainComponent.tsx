@@ -1,5 +1,5 @@
-import Navbar from '../../../components/Navbar.tsx';
-import type { Booking } from '../../../types/Booking.ts';
+import Navbar from '../../../../components/Navbar.tsx';
+import type { Booking } from '../../../../types/Booking.ts';
 import BookingCard from './BookingCard.tsx';
 
 const BookingPageMainComponent = ({

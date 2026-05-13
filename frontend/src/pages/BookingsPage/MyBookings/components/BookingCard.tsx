@@ -1,10 +1,10 @@
-import type { Booking } from '../../../types/Booking.ts';
+import type { Booking } from '../../../../types/Booking.ts';
 import {
   formatDate,
   nightsBetween,
   statusLabels,
   statusStyles,
-} from '../../../utils/BookingUtils.ts';
+} from '../../../../utils/BookingUtils.ts';
 
 const BookingCard = ({
   booking,

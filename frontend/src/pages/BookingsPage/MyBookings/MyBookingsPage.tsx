@@ -1,4 +1,4 @@
-import { mockBookings } from '../../utils/BookingUtils.ts';
+import { mockBookings } from '../../../utils/BookingUtils.ts';
 import BookingPageMainComponent from './components/BookingPageMainComponent.tsx';
 
 const MyBookingsPage = () => {
