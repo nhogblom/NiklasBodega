@@ -1,8 +1,19 @@
-import { mockBookings } from '../../../utils/BookingUtils.ts';
 import BookingPageMainComponent from './components/BookingPageMainComponent.tsx';
+import { useEffect, useState } from 'react';
+import {
+  deleteBooking,
+  getAllBookings,
+} from '../../../api/BookingApiService.ts';
+import type { Booking } from '../../../types/Booking.ts';
+import LoadingMessage from '../../../components/LoadingMessage.tsx';
+import ErrorMessage from '../../../components/ErrorMessage.tsx';
+import CancelBookingConfirmationModal from './components/CancelBookingConfirmationModal.tsx';
 
 const MyBookingsPage = () => {
-  const bookings = mockBookings;
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [chosenBookingId, setChosenBookingId] = useState<number | null>(null);
 
   const handleEdit = (id: number) => {
     // TODO: navigate to edit booking page
@@ -10,16 +21,50 @@ const MyBookingsPage = () => {
   };
 
   const handleCancel = (id: number) => {
-    // TODO: call cancelBooking API then refresh list
-    console.log('Cancel booking', id);
+    setChosenBookingId(id);
   };
 
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const myBookings = await getAllBookings();
+        setBookings(myBookings);
+      } catch {
+        setError('Failed loading bookings.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBookings();
+  }, []);
+
+  if (loading) return <LoadingMessage message={'Loading bookings...'} />;
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-stone-100 flex items-center justify-center">
+        <ErrorMessage message={error} />
+      </div>
+    );
+  }
   return (
-    <BookingPageMainComponent
-      bookings={bookings}
-      handleEdit={handleEdit}
-      handleCancel={handleCancel}
-    />
+    <>
+      {chosenBookingId && (
+        <CancelBookingConfirmationModal
+          bookingNumber={chosenBookingId}
+          onConfirm={() => {
+            deleteBooking(chosenBookingId);
+          }}
+          onCancel={() => setChosenBookingId(null)}
+        />
+      )}
+
+      <BookingPageMainComponent
+        bookings={bookings}
+        handleEdit={handleEdit}
+        handleCancel={handleCancel}
+      />
+    </>
   );
 };
 

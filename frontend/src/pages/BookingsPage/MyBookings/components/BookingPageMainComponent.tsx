@@ -41,7 +41,7 @@ const BookingPageMainComponent = ({
           <div className="flex flex-col gap-4">
             {bookings.map((booking) => (
               <BookingCard
-                key={booking.id}
+                key={booking.bookingNumber}
                 booking={booking}
                 onEdit={handleEdit}
                 onCancel={handleCancel}
