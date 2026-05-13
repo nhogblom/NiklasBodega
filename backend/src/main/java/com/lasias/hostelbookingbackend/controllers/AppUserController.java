@@ -2,14 +2,15 @@ package com.lasias.hostelbookingbackend.controllers;
 
 
 
-import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
 import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.models.AppUser;
-import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
+import com.lasias.hostelbookingbackend.dtos.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.services.AppUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,9 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDTO> registerUser(@Valid @RequestBody RegisterNewUserDTO newUser) {
-        return ResponseEntity.ok().body(appUserService.register(newUser));
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterNewUserDTO newUser) {
+        ResponseCookie jwtCookie = appUserService.register(newUser);
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,jwtCookie.toString()).build();
     }
 
     @PatchMapping

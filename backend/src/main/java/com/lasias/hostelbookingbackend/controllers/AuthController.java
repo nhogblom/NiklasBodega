@@ -23,7 +23,7 @@ public class AuthController {
     private final AppUserService appUserService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO request) {
+    public ResponseEntity<String> login(@Valid @RequestBody AuthRequestDTO request) {
         ResponseCookie jwtCookie = appUserService.loginUser(request);
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,jwtCookie.toString()).build();
     }
