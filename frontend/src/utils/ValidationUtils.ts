@@ -18,6 +18,17 @@ export const loginSchema = z.object({
     ),
 });
 
+export const bookingSchema = z
+  .object({
+    checkInDate: z.string().min(7, 'Invalid Check-in date'),
+    checkOutDate: z.string().min(7, 'Invalid Check-out date'),
+    extraBed: z.boolean(),
+  })
+  .refine((data) => new Date(data.checkOutDate) > new Date(data.checkInDate), {
+    message: 'Check-out date must be after Check-in data',
+    path: ['checkOutDate'],
+  });
+
 export const registerSchema = z
   .object({
     email: z
@@ -49,3 +60,4 @@ export const registerSchema = z
   });
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
+export type BookingFormData = z.infer<typeof bookingSchema>;
