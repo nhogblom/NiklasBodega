@@ -105,8 +105,7 @@ public class AppUserService {
         return passwordEncoder.encode(password);
     }
 
-    public void updateUser(UpdateUserDTO updateUserDTO) {
-        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public void updateUser(UpdateUserDTO updateUserDTO, AppUser user) {
         if (user == null){
             log.error("User not found when updating user");
             throw new IllegalArgumentException("User not found");
@@ -137,8 +136,7 @@ public class AppUserService {
 
     }
 
-    public void deleteMe() {
-        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public void deleteMe(AppUser user) {
         if (user == null){
             log.error("Unable to delete user, User not found");
             throw new IllegalArgumentException("Unable to delete user, User not found");
@@ -152,8 +150,7 @@ public class AppUserService {
         appUserRepository.delete(user);
     }
 
-    public UserInformationDTO provideUserDetails() {
-        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public UserInformationDTO provideUserDetails(AppUser user) {
         if (user == null){
             log.error("User not found when retrieving user details");
             throw new IllegalArgumentException("User not found");
@@ -162,8 +159,7 @@ public class AppUserService {
         return new UserInformationDTO(user.getEmail(),user.getName(),user.getRole(),user.getCreatedAt());
     }
 
-    public ResponseEntity<String> logout() {
-        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<String> logout(AppUser user) {
         if (user == null){
             log.error("User not found when logging out");
             throw new IllegalArgumentException("User not found");

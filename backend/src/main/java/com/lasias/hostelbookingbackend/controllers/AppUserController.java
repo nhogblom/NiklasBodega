@@ -5,11 +5,13 @@ package com.lasias.hostelbookingbackend.controllers;
 import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
 import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
+import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.services.AppUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,19 +27,19 @@ public class AppUserController {
     }
 
     @PatchMapping
-    public ResponseEntity<String> updateUser(@RequestBody UpdateUserDTO updateUserDTO){
-        appUserService.updateUser(updateUserDTO);
+    public ResponseEntity<String> updateUser(@RequestBody UpdateUserDTO updateUserDTO, @AuthenticationPrincipal AppUser user) {
+        appUserService.updateUser(updateUserDTO, user);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<UserInformationDTO> provideUserDetails(){
-        return ResponseEntity.ok(appUserService.provideUserDetails());
+    public ResponseEntity<UserInformationDTO> provideUserDetails(@AuthenticationPrincipal AppUser user) {
+        return ResponseEntity.ok(appUserService.provideUserDetails(user));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteUser(){
-        appUserService.deleteMe();
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal AppUser user) {
+        appUserService.deleteMe(user);
         return ResponseEntity.ok().build();
     }
 
