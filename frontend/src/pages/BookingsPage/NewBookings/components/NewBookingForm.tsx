@@ -1,6 +1,7 @@
 import { useBookingForm } from '../../../../hooks/useBookingForm.tsx';
 import type { Room } from '../../../../types/Room.ts';
 import type { BookingFormData } from '../../../../utils/ValidationUtils.ts';
+import { nightsBetween } from '../../../../utils/BookingUtils.ts';
 
 const NewBookingForm = ({
   onSubmit,
@@ -25,17 +26,7 @@ const NewBookingForm = ({
   const checkOutDate = watch('checkOutDate');
   const extraBed = watch('extraBed');
 
-  const nights =
-    checkInDate && checkOutDate
-      ? Math.max(
-          0,
-          Math.round(
-            (new Date(checkOutDate).getTime() -
-              new Date(checkInDate).getTime()) /
-              (1000 * 60 * 60 * 24),
-          ),
-        )
-      : 0;
+  const nights = nightsBetween(checkInDate, checkOutDate);
 
   const totalPrice = nights * room.roomType.price;
 
