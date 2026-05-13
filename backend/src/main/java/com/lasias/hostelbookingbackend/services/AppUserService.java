@@ -1,17 +1,14 @@
 package com.lasias.hostelbookingbackend.services;
 import com.lasias.hostelbookingbackend.dtos.AuthRequestDTO;
-import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
 import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.enums.AuthProvider;
-import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
+import com.lasias.hostelbookingbackend.dtos.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +45,7 @@ public class AppUserService {
     }
 
     // register user through user information from the frontend.
-    public AuthResponseDTO register(RegisterNewUserDTO newUser){
+    public ResponseCookie register(RegisterNewUserDTO newUser){
         if (appUserRepository.findByEmail(newUser.email()).isPresent()){
             log.error("Registration failed, email already in use:");
             throw new IllegalArgumentException("Email already in use");
@@ -60,7 +57,9 @@ public class AppUserService {
         user.setRole("USER");
         appUserRepository.save(user);
         log.info("New user registered: {}", user.getEmail());
-        return new AuthResponseDTO(jwtService.generateToken(user.getEmail()));
+
+        ResponseCookie cookie = jwtService.createJwtCookie(user.getEmail(),false);
+        return cookie;
     }
 
 
