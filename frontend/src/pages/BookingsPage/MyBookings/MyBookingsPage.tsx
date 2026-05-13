@@ -35,6 +35,7 @@ const MyBookingsPage = () => {
         setLoading(false);
       }
     };
+
     fetchBookings();
   }, []);
 
@@ -52,8 +53,23 @@ const MyBookingsPage = () => {
       {chosenBookingId && (
         <CancelBookingConfirmationModal
           bookingNumber={chosenBookingId}
-          onConfirm={() => {
-            deleteBooking(chosenBookingId);
+          onConfirm={async () => {
+            try {
+              await deleteBooking(chosenBookingId);
+            } catch {
+              setError('Failed to delete booking.');
+              setChosenBookingId(null);
+              return;
+            }
+            try {
+              const myBookings = await getAllBookings();
+              setBookings(myBookings);
+            } catch {
+              setError('Failed to fetch bookings.');
+            } finally {
+              setChosenBookingId(null);
+              setLoading(false);
+            }
           }}
           onCancel={() => setChosenBookingId(null)}
         />
