@@ -5,6 +5,7 @@ import { type BookingFormData } from '../../../utils/ValidationUtils.ts';
 import { useState } from 'react';
 import NewBookingForm from './components/NewBookingForm.tsx';
 import BookingRoomCard from './components/BookingRoomCard.tsx';
+import { createBooking } from '../../../api/BookingApiService.ts';
 
 const NewBookingsPage = () => {
   const navigate = useNavigate();
@@ -19,7 +20,21 @@ const NewBookingsPage = () => {
   }
 
   const onSubmit = async (data: BookingFormData) => {
-    //TODO add on submit logic
+    setError(null);
+    setLoading(true);
+    try {
+      await createBooking({
+        roomTypeId: room.roomType.id,
+        checkInDate: data.checkInDate,
+        checkOutDate: data.checkOutDate,
+        extraBed: data.extraBed,
+      });
+      //TODO add modal popup with success -> redirect to MyBookings.
+    } catch {
+      setError('Error creating booking');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

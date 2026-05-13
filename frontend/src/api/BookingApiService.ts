@@ -1,5 +1,6 @@
 import axiosInstance from './AxiosConfig.ts';
 import type { Booking } from '../types/Booking.ts';
+import type { BookingRequestDto } from '../pages/BookingsPage/NewBookings/dto/BookingRequestDto.ts';
 
 export const getAllBookings = async () => {
   try {
@@ -11,9 +12,9 @@ export const getAllBookings = async () => {
   }
 };
 
-export const createBooking = async (booking: Booking) => {
+export const createBooking = async (newBooking: BookingRequestDto) => {
   try {
-    const response = await axiosInstance.post('/api/bookings/new', booking);
+    const response = await axiosInstance.post('/api/bookings', newBooking);
     return response.data;
   } catch (error) {
     console.error('Error creating new booking', error);
