@@ -2,9 +2,11 @@ package com.lasias.hostelbookingbackend.controllers;
 import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.dtos.UpdateBookingRequestDTO;
+import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.services.BookingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,8 +20,8 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingResponseDTO> createBooking(@RequestBody CreateBookingRequestDTO request) {
-        BookingResponseDTO response = bookingService.createBooking(request);
+    public ResponseEntity<BookingResponseDTO> createBooking(@RequestBody CreateBookingRequestDTO request, @AuthenticationPrincipal AppUser user) {
+        BookingResponseDTO response = bookingService.createBooking(request,user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
