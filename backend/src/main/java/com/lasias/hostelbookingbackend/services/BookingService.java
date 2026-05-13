@@ -1,38 +1,37 @@
 package com.lasias.hostelbookingbackend.services;
-import java.time.LocalDate;import com.lasias.hostelbookingbackend.dtos.UpdateBookingRequestDTO;
+
 import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
-import com.lasias.hostelbookingbackend.models.BookingEntity;
+import com.lasias.hostelbookingbackend.dtos.UpdateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.enums.BookingStatus;
-import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.models.AppUser;
+import com.lasias.hostelbookingbackend.models.BookingEntity;
+import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
 import com.lasias.hostelbookingbackend.repositories.RoomRepository;
-import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class BookingService {
 
     private final BookingRepository bookingRepository;
-    private final AppUserRepository appUserRepository;
     private final RoomRepository roomRepository;
 
     public BookingService(
             BookingRepository bookingRepository,
-            AppUserRepository appUserRepository,
             RoomRepository roomRepository
     ) {
         this.bookingRepository = bookingRepository;
-        this.appUserRepository = appUserRepository;
         this.roomRepository = roomRepository;
     }
 
     public BookingResponseDTO createBooking(CreateBookingRequestDTO request, AppUser user) {
         validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
 
-        RoomEntity room = roomRepository.findById(request.getRoomId())
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+        RoomEntity room = roomRepository.findFirstByRoomTypeId(request.getRoomTypeId())
+                .orElseThrow(() -> new RuntimeException("No room found for selected room type"));
 
         BookingEntity booking = new BookingEntity(
                 user,
@@ -44,44 +43,21 @@ public class BookingService {
 
         BookingEntity savedBooking = bookingRepository.save(booking);
 
-        return new BookingResponseDTO(
-                savedBooking.getId(),
-                savedBooking.getUser().getId(),
-                savedBooking.getRoom().getId(),
-                savedBooking.getCheckInDate(),
-                savedBooking.getCheckOutDate(),
-                savedBooking.isExtraBed(),
-                savedBooking.getStatus().name()
-        );
+        return toResponseDTO(savedBooking);
     }
 
-    private void validateBookingDates(LocalDate checkInDate, LocalDate checkOutDate) {
-        if (checkInDate == null || checkOutDate == null) {
-            throw new IllegalArgumentException("Check-in and check-out dates are required");
-        }
-
-        if (checkInDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Check-in date cannot be in the past");
-        }
-
-        if (!checkOutDate.isAfter(checkInDate)) {
-            throw new IllegalArgumentException("Check-out date must be after check-in date");
-        }
+    public List<BookingResponseDTO> getBookingsByUser(AppUser user) {
+        return bookingRepository.findByUser(user)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
     public BookingResponseDTO getBookingById(Long id) {
         BookingEntity booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
-        return new BookingResponseDTO(
-                booking.getId(),
-                booking.getUser().getId(),
-                booking.getRoom().getId(),
-                booking.getCheckInDate(),
-                booking.getCheckOutDate(),
-                booking.isExtraBed(),
-                booking.getStatus().name()
-        );
+        return toResponseDTO(booking);
     }
 
     public BookingResponseDTO updateBooking(Long id, UpdateBookingRequestDTO request) {
@@ -100,16 +76,9 @@ public class BookingService {
 
         BookingEntity savedBooking = bookingRepository.save(booking);
 
-        return new BookingResponseDTO(
-                savedBooking.getId(),
-                savedBooking.getUser().getId(),
-                savedBooking.getRoom().getId(),
-                savedBooking.getCheckInDate(),
-                savedBooking.getCheckOutDate(),
-                savedBooking.isExtraBed(),
-                savedBooking.getStatus().name()
-        );
+        return toResponseDTO(savedBooking);
     }
+
     public void deleteBooking(Long id) {
         BookingEntity booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
@@ -117,5 +86,33 @@ public class BookingService {
         booking.setStatus(BookingStatus.CANCELLED);
 
         bookingRepository.save(booking);
+    }
+
+    private void validateBookingDates(LocalDate checkInDate, LocalDate checkOutDate) {
+        if (checkInDate == null || checkOutDate == null) {
+            throw new IllegalArgumentException("Check-in and check-out dates are required");
+        }
+
+        if (checkInDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Check-in date cannot be in the past");
+        }
+
+        if (!checkOutDate.isAfter(checkInDate)) {
+            throw new IllegalArgumentException("Check-out date must be after check-in date");
+        }
+    }
+
+    private BookingResponseDTO toResponseDTO(BookingEntity booking) {
+        return new BookingResponseDTO(
+                booking.getId(),
+                booking.getUser().getId(),
+                booking.getRoom().getId(),
+                booking.getRoom().getRoomType().getName(),
+                booking.getRoom().getRoomType().getImageUrl(),
+                booking.getCheckInDate(),
+                booking.getCheckOutDate(),
+                booking.isExtraBed(),
+                booking.getStatus().name()
+        );
     }
 }

@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.enums;
 
 
 public enum BookingStatus {
-    ACTIVE,
+    CONFIRMED,
+    AWAITING_CONFIRMATION,
     CANCELLED
 }

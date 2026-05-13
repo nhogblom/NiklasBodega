@@ -17,7 +17,7 @@ public class BookingEntity {
     private boolean extraBed;
 
     @Enumerated(EnumType.STRING)
-    private BookingStatus status = BookingStatus.ACTIVE;
+    private BookingStatus status = BookingStatus.CONFIRMED;
 
     @ManyToOne
     private AppUser user;
@@ -34,7 +34,7 @@ public class BookingEntity {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.extraBed = extraBed;
-        this.status = BookingStatus.ACTIVE;
+        this.status = BookingStatus.CONFIRMED;
     }
 
     public Long getId() {
@@ -92,4 +92,4 @@ public class BookingEntity {
     public void setRoom(RoomEntity room) {
         this.room = room;
     }
-}
+}c
