@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.models;
 import com.lasias.hostelbookingbackend.enums.BookingStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 public class BookingEntity {
@@ -9,6 +10,9 @@ public class BookingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true, updatable = false)
+    private String bookingNumber = UUID.randomUUID().toString();
 
     private LocalDate checkInDate;
 
@@ -47,6 +51,10 @@ public class BookingEntity {
         return id;
     }
 
+    public String getBookingNumber() {
+        return bookingNumber;
+    }
+
     public LocalDate getCheckInDate() {
         return checkInDate;
     }
@@ -73,6 +81,10 @@ public class BookingEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
     }
 
     public void setCheckInDate(LocalDate checkInDate) {

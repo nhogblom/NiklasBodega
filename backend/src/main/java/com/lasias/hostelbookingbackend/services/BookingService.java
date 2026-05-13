@@ -55,18 +55,16 @@ public class BookingService {
                 .toList();
     }
 
-    public BookingResponseDTO getBookingById(Long id) {
-        BookingEntity booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    public BookingResponseDTO getBookingByBookingNumber(String bookingNumber) {
+        BookingEntity booking = findBookingByBookingNumber(bookingNumber);
 
         return toResponseDTO(booking);
     }
 
-    public BookingResponseDTO updateBooking(Long id, UpdateBookingRequestDTO request) {
+    public BookingResponseDTO updateBooking(String bookingNumber, UpdateBookingRequestDTO request) {
         validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
 
-        BookingEntity booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+        BookingEntity booking = findBookingByBookingNumber(bookingNumber);
 
         RoomEntity room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new RuntimeException("Room not found"));
@@ -81,13 +79,17 @@ public class BookingService {
         return toResponseDTO(savedBooking);
     }
 
-    public void deleteBooking(Long id) {
-        BookingEntity booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    public void deleteBooking(String bookingNumber) {
+        BookingEntity booking = findBookingByBookingNumber(bookingNumber);
 
         booking.setStatus(BookingStatus.CANCELLED);
 
         bookingRepository.save(booking);
+    }
+
+    private BookingEntity findBookingByBookingNumber(String bookingNumber) {
+        return bookingRepository.findByBookingNumber(bookingNumber)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
     }
 
     private void validateBookingDates(LocalDate checkInDate, LocalDate checkOutDate) {
@@ -115,7 +117,7 @@ public class BookingService {
         );
 
         return new BookingResponseDTO(
-                booking.getId(),
+                booking.getBookingNumber(),
                 roomResponseDTO,
                 booking.getCheckInDate(),
                 booking.getCheckOutDate(),

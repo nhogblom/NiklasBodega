@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Getter
 public class BookingResponseDTO {
 
-    private Long id;
+    private String bookingNumber;
     private RoomResponseDTO room;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
@@ -15,14 +15,14 @@ public class BookingResponseDTO {
     private String status;
 
     public BookingResponseDTO(
-            Long id,
+            String bookingNumber,
             RoomResponseDTO room,
             LocalDate checkInDate,
             LocalDate checkOutDate,
             boolean extraBed,
             String status
     ) {
-        this.id = id;
+        this.bookingNumber = bookingNumber;
         this.room = room;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;

@@ -38,26 +38,26 @@ public class BookingController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BookingResponseDTO> getBookingById(@PathVariable Long id) {
-        BookingResponseDTO response = bookingService.getBookingById(id);
+    @GetMapping("/{bookingNumber}")
+    public ResponseEntity<BookingResponseDTO> getBookingByBookingNumber(@PathVariable String bookingNumber) {
+        BookingResponseDTO response = bookingService.getBookingByBookingNumber(bookingNumber);
 
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{bookingNumber}")
     public ResponseEntity<BookingResponseDTO> updateBooking(
-            @PathVariable Long id,
+            @PathVariable String bookingNumber,
             @RequestBody UpdateBookingRequestDTO request
     ) {
-        BookingResponseDTO response = bookingService.updateBooking(id, request);
+        BookingResponseDTO response = bookingService.updateBooking(bookingNumber, request);
 
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
+    @DeleteMapping("/{bookingNumber}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable String bookingNumber) {
+        bookingService.deleteBooking(bookingNumber);
 
         return ResponseEntity.noContent().build();
     }
