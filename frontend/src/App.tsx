@@ -10,8 +10,8 @@ import LoginPage from './pages/LoginPage.tsx';
 import HomePage from './pages/HomePage.tsx';
 import RegisterPage from './pages/RegisterPage.tsx';
 import { useAuth } from './hooks/useAuth.tsx';
-import MyBookingsPage from './pages/MyBookingsPage.tsx';
-import NewBookingsPage from './pages/NewBookingsPage.tsx';
+import MyBookingsPage from './pages/BookingsPage/MyBookings/MyBookingsPage.tsx';
+import NewBookingsPage from './pages/BookingsPage/NewBookings/NewBookingsPage.tsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.tsx';
 import RoomsPage from './pages/RoomsPage/RoomsPage.tsx';
 import OAuthRedirectPage from './pages/OAuthRedirectPage.tsx';
@@ -42,8 +42,6 @@ function App() {
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/roomspage" element={<RoomsPage />} />
         <Route path="/oauth2/redirect" element={<OAuthRedirectPage />} />
-        //TODO MOVE TO PROTECTED ROUTE WHEN AUTH IS ONLINE
-        <Route path="/bookings" element={<MyBookingsPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/myBookings" element={<MyBookingsPage />} />
           <Route path="/newBooking" element={<NewBookingsPage />} />
