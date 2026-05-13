@@ -2,11 +2,10 @@ package com.lasias.hostelbookingbackend.controllers;
 
 
 
-import com.lasias.hostelbookingbackend.dtos.AuthResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
 import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.models.AppUser;
-import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
+import com.lasias.hostelbookingbackend.dtos.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.services.AppUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

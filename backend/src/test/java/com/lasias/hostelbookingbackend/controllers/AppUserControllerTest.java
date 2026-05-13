@@ -1,10 +1,9 @@
 package com.lasias.hostelbookingbackend.controllers;
 
-import com.lasias.hostelbookingbackend.dtos.AuthRequestDTO;
 import com.lasias.hostelbookingbackend.dtos.RegisterNewUserDTO;
 import com.lasias.hostelbookingbackend.dtos.UserInformationDTO;
 import com.lasias.hostelbookingbackend.models.AppUser;
-import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
+import com.lasias.hostelbookingbackend.dtos.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import com.lasias.hostelbookingbackend.services.AppUserService;
 import com.lasias.hostelbookingbackend.services.JwtService;
@@ -51,7 +50,7 @@ class AppUserControllerTest {
     }
 
     @Test
-    void registerUser() {
+    void registerUserDeniesFrontendFromAddingDuplicateUsersWithSameInfoAndSuccesfullyAddsNewUsers() {
         // bad registration supposed to fail.
         RegisterNewUserDTO newUserWithAlreadyRegisteredInformationDTO = new RegisterNewUserDTO(USERFULLNAME,EMAIL,PASSWORD);
         ResponseEntity<String> badRegisterResponse = restTemplate.postForEntity("/api/user/register",newUserWithAlreadyRegisteredInformationDTO,String.class);
@@ -71,15 +70,13 @@ class AppUserControllerTest {
     }
 
     @Test
-    void updateUser() {
+    void updateUserActuallyChangesValuesOfTheFieldsIntended() {
 
         String newEmail = "newEmail@email.com";
         String newName = "Doe John";
         String newPassword = "aNewPassword!2";
         UpdateUserDTO updateUserDTO = new UpdateUserDTO(newName,newPassword,newEmail);
-        String jwtToken = jwtService.generateToken(EMAIL);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "jwt="+jwtToken);
+        HttpHeaders headers = getHttpHeadersWithJwtToken();
         ResponseEntity<String> response = restTemplate.exchange(
                 "/api/user",
                 HttpMethod.PATCH,
@@ -101,11 +98,57 @@ class AppUserControllerTest {
 
     }
 
+
+
     @Test
     void provideUserDetails() {
+        String unExpectedEmail = "sadjasdjads@gmail.com";
+        String unExpectedName = "Doe John";
+        String expectedRole = "USER";
+        String unExpectedRole = "ADMIN";
+
+        HttpHeaders headers = getHttpHeadersWithJwtToken();
+        ResponseEntity<UserInformationDTO> response = restTemplate.exchange(
+                "/api/user",
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                UserInformationDTO.class
+        );
+        UserInformationDTO userInformationDTO = response.getBody();
+
+        assertEquals(EMAIL,userInformationDTO.email());
+        assertNotEquals(unExpectedEmail,userInformationDTO.email());
+        assertEquals(USERFULLNAME,userInformationDTO.name());
+        assertNotEquals(unExpectedName,userInformationDTO.name());
+        assertEquals(expectedRole,userInformationDTO.role());
+        assertNotEquals(unExpectedRole,userInformationDTO.role());
+
+
+
     }
 
     @Test
     void deleteUser() {
+        assertTrue(appUserRepository.existsByEmail(EMAIL));
+        HttpHeaders headers = getHttpHeadersWithJwtToken();
+        ResponseEntity<String> response = restTemplate.exchange(
+                "/api/user",
+                HttpMethod.DELETE,
+                new HttpEntity<>(headers),
+                String.class
+        );
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertFalse(appUserRepository.existsByEmail(EMAIL));
     }
+
+
+    private HttpHeaders getHttpHeadersWithJwtToken() {
+        String jwtToken = jwtService.generateToken(EMAIL);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwt="+jwtToken);
+        return headers;
+    }
+
+
+
 }
