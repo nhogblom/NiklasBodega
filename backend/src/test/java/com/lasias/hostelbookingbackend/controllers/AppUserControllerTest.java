@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestRestTemplate
 class AppUserControllerTest {
-    private final String USERFULLNAME = "John doe";
+    private final String USER_FULL_NAME = "John doe";
     private final String EMAIL = "john.doe@email.com";
     private final String PASSWORD = "JohnDoesPassword!123";
 
@@ -42,7 +42,7 @@ class AppUserControllerTest {
     void setUp() {
         appUserRepository.deleteAll();
         AppUser user = new AppUser();
-        user.setName(USERFULLNAME);
+        user.setName(USER_FULL_NAME);
         user.setEmail(EMAIL);
         user.setPassword(passwordEncoder.encode(PASSWORD));
         user.setRole("USER");
@@ -51,12 +51,12 @@ class AppUserControllerTest {
 
     @Test
     void registerUserDeniesFrontendFromAddingDuplicateUsersWithSameInfoAndSuccesfullyAddsNewUsers() {
-        // bad registration supposed to fail.
-        RegisterNewUserDTO newUserWithAlreadyRegisteredInformationDTO = new RegisterNewUserDTO(USERFULLNAME,EMAIL,PASSWORD);
+
+        RegisterNewUserDTO newUserWithAlreadyRegisteredInformationDTO = new RegisterNewUserDTO(USER_FULL_NAME,EMAIL,PASSWORD);
         ResponseEntity<String> badRegisterResponse = restTemplate.postForEntity("/api/user/register",newUserWithAlreadyRegisteredInformationDTO,String.class);
         assertEquals(HttpStatus.BAD_REQUEST,badRegisterResponse.getStatusCode());
 
-        // good registration supposed to succeed and return a jwt token.
+
         RegisterNewUserDTO newUserWithGoodInformationDTO = new RegisterNewUserDTO("Joanna Doe","joanna.doe@email.com","JoannaDoesPassword123!");
         ResponseEntity<String> goodBadRegisterResponse = restTemplate.postForEntity("/api/user/register",newUserWithGoodInformationDTO,String.class);
         assertEquals(HttpStatus.OK,goodBadRegisterResponse.getStatusCode());
@@ -84,13 +84,14 @@ class AppUserControllerTest {
                 String.class
         );
 
+        assertEquals(HttpStatus.OK,response.getStatusCode());
         AppUser user = appUserRepository.findByEmail(newEmail).orElse(null);
         assertTrue(appUserRepository.existsByEmail(newEmail));
         assertFalse(appUserRepository.existsByEmail(EMAIL));
         assertNotNull(user);
         assertNotEquals(user.getEmail(),EMAIL);
         assertEquals(newEmail, user.getEmail());
-        assertNotEquals(user.getName(),USERFULLNAME);
+        assertNotEquals(user.getName(), USER_FULL_NAME);
         assertEquals(newName, user.getName());
         assertFalse(appUserService.validPassword(PASSWORD,user.getPassword()));
         assertTrue(appUserService.validPassword(newPassword,user.getPassword()));
@@ -114,11 +115,12 @@ class AppUserControllerTest {
                 new HttpEntity<>(headers),
                 UserInformationDTO.class
         );
+        assertEquals(HttpStatus.OK,response.getStatusCode());
         UserInformationDTO userInformationDTO = response.getBody();
-
+        assertNotNull(userInformationDTO);
         assertEquals(EMAIL,userInformationDTO.email());
         assertNotEquals(unExpectedEmail,userInformationDTO.email());
-        assertEquals(USERFULLNAME,userInformationDTO.name());
+        assertEquals(USER_FULL_NAME,userInformationDTO.name());
         assertNotEquals(unExpectedName,userInformationDTO.name());
         assertEquals(expectedRole,userInformationDTO.role());
         assertNotEquals(unExpectedRole,userInformationDTO.role());
