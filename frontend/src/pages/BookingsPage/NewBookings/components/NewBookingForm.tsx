@@ -11,6 +11,7 @@ const NewBookingForm = ({
   room: Room;
   onSubmit: (data: BookingFormData) => void;
   loading: boolean;
+  success: boolean;
   error: string | null;
 }) => {
   const {

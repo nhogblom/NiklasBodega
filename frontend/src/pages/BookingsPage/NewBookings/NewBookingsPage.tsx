@@ -6,12 +6,17 @@ import { useState } from 'react';
 import NewBookingForm from './components/NewBookingForm.tsx';
 import BookingRoomCard from './components/BookingRoomCard.tsx';
 import { createBooking } from '../../../api/BookingApiService.ts';
+import BookingSuccessModal from './components/BookingSuccessModal.tsx';
+import type { BookingResponseDto } from './dto/BookingResponseDto.ts';
 
 const NewBookingsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [confirmedBooking, setConfirmedBooking] =
+    useState<BookingResponseDto | null>(null);
   const room = location.state?.room as Room;
 
   if (!room) {
@@ -22,14 +27,17 @@ const NewBookingsPage = () => {
   const onSubmit = async (data: BookingFormData) => {
     setError(null);
     setLoading(true);
+
     try {
-      await createBooking({
+      const newBooking = await createBooking({
         roomTypeId: room.roomType.id,
         checkInDate: data.checkInDate,
         checkOutDate: data.checkOutDate,
         extraBed: data.extraBed,
       });
-      //TODO add modal popup with success -> redirect to MyBookings.
+      setConfirmedBooking(newBooking);
+      setSuccess(true);
+      setTimeout(() => navigate('/myBookings'), 4000);
     } catch {
       setError('Error creating booking');
     } finally {
@@ -40,6 +48,11 @@ const NewBookingsPage = () => {
   return (
     <div className="min-h-screen bg-stone-100">
       <Navbar />
+
+      {success && confirmedBooking && (
+        <BookingSuccessModal booking={confirmedBooking} />
+      )}
+
       <div className="max-w-5xl mx-auto px-6 py-12">
         <button
           onClick={() => navigate('/roomspage')}
@@ -65,6 +78,7 @@ const NewBookingsPage = () => {
             onSubmit={onSubmit}
             loading={loading}
             error={error}
+            success={success}
           />
         </div>
       </div>
