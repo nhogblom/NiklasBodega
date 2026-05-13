@@ -1,7 +1,10 @@
 import type { Room } from '../../../types/Room.ts';
 import badgeStyles from './BadgeStyles.tsx';
+import { useNavigate } from 'react-router-dom';
 
 const FeaturedRoom = ({ room }: { room: Room }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-white rounded-xl border border-stone-200 overflow-hidden grid md:grid-cols-2">
       <img
@@ -39,7 +42,10 @@ const FeaturedRoom = ({ room }: { room: Room }) => {
               </span>
             </p>
           </div>
-          <button className="bg-orange-900 text-white px-5 py-2 rounded text-xs font-bold uppercase tracking-widest hover:bg-orange-800 transition">
+          <button
+            onClick={() => navigate('/newBooking', { state: { room } })}
+            className="bg-orange-900 text-white px-5 py-2 rounded text-xs font-bold uppercase tracking-widest hover:bg-orange-800 transition"
+          >
             Book Now
           </button>
         </div>
