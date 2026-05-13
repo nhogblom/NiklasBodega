@@ -43,8 +43,7 @@ public class SecurityConfig {
                             "/api/auth/login**",
                             "/oauth2/**",
                             "/api/user/register",
-                            "/api/rooms/**",
-                            "/api/bookings/**"
+                            "/api/rooms/**"
                     ).permitAll();
 
                     auth.anyRequest().authenticated();

@@ -28,7 +28,13 @@ public class BookingEntity {
     public BookingEntity() {
     }
 
-    public BookingEntity(AppUser user, RoomEntity room, LocalDate checkInDate, LocalDate checkOutDate, boolean extraBed) {
+    public BookingEntity(
+            AppUser user,
+            RoomEntity room,
+            LocalDate checkInDate,
+            LocalDate checkOutDate,
+            boolean extraBed
+    ) {
         this.user = user;
         this.room = room;
         this.checkInDate = checkInDate;
@@ -92,4 +98,4 @@ public class BookingEntity {
     public void setRoom(RoomEntity room) {
         this.room = room;
     }
-}c
+}

@@ -22,20 +22,26 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingResponseDTO> createBooking(@RequestBody CreateBookingRequestDTO request, @AuthenticationPrincipal AppUser user) {
-        BookingResponseDTO response = bookingService.createBooking(request,user);
+    public ResponseEntity<BookingResponseDTO> createBooking(
+            @RequestBody CreateBookingRequestDTO request,
+            @AuthenticationPrincipal AppUser user
+    ) {
+        BookingResponseDTO response = bookingService.createBooking(request, user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<List<BookingResponseDTO>> getMyBookings(@AuthenticationPrincipal AppUser user) {
+        List<BookingResponseDTO> response = bookingService.getBookingsByUser(user);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BookingResponseDTO> getBookingById(@PathVariable Long id) {
         BookingResponseDTO response = bookingService.getBookingById(id);
-        return ResponseEntity.ok(response);
-    }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<BookingResponseDTO>> getBookingsByUserId(@PathVariable Long userId) {
-        List<BookingResponseDTO> response = bookingService.getBookingsByUserId(userId);
         return ResponseEntity.ok(response);
     }
 
@@ -45,18 +51,14 @@ public class BookingController {
             @RequestBody UpdateBookingRequestDTO request
     ) {
         BookingResponseDTO response = bookingService.updateBooking(id, request);
+
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
         bookingService.deleteBooking(id);
-        return ResponseEntity.noContent().build();
-    }
 
-    @GetMapping("/my")
-    public ResponseEntity<List<BookingResponseDTO>> getMyBookings(Authentication authentication) {
-        AppUser user = (AppUser) authentication.getPrincipal();
-        return ResponseEntity.ok(bookingService.getBookingsByUser(user));
+        return ResponseEntity.noContent().build();
     }
 }

@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.services;
 
 import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
+import com.lasias.hostelbookingbackend.dtos.RoomResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.UpdateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.enums.BookingStatus;
 import com.lasias.hostelbookingbackend.models.AppUser;
@@ -10,6 +11,7 @@ import com.lasias.hostelbookingbackend.models.RoomEntity;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
 import com.lasias.hostelbookingbackend.repositories.RoomRepository;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class BookingService {
     public BookingResponseDTO createBooking(CreateBookingRequestDTO request, AppUser user) {
         validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
 
-        RoomEntity room = roomRepository.findFirstByRoomTypeId(request.getRoomTypeId())
+        RoomEntity room = roomRepository.findFirstByRoomType_Id(request.getRoomTypeId())
                 .orElseThrow(() -> new RuntimeException("No room found for selected room type"));
 
         BookingEntity booking = new BookingEntity(
@@ -103,12 +105,18 @@ public class BookingService {
     }
 
     private BookingResponseDTO toResponseDTO(BookingEntity booking) {
+        RoomEntity room = booking.getRoom();
+
+        RoomResponseDTO roomResponseDTO = new RoomResponseDTO(
+                room.getId(),
+                room.getRoomNumber(),
+                room.isExtraBed(),
+                room.getRoomType()
+        );
+
         return new BookingResponseDTO(
                 booking.getId(),
-                booking.getUser().getId(),
-                booking.getRoom().getId(),
-                booking.getRoom().getRoomType().getName(),
-                booking.getRoom().getRoomType().getImageUrl(),
+                roomResponseDTO,
                 booking.getCheckInDate(),
                 booking.getCheckOutDate(),
                 booking.isExtraBed(),
