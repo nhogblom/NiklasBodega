@@ -7,6 +7,7 @@ const Navbar = () => {
   const navItems = [
     { label: 'Rooms', path: '/roomspage' },
     { label: 'Bookings', path: '/myBookings', protected: true },
+    { label: 'Settings', path: '/settings', protected: true },
   ];
   const authenticatedNavItems = navItems.filter(
     (item) => !item.protected || isAuthenticated,

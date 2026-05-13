@@ -10,6 +10,8 @@ import com.lasias.hostelbookingbackend.models.UpdateUserDTO;
 import com.lasias.hostelbookingbackend.services.AppUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +30,16 @@ public class AppUserController {
 
     @PatchMapping
     public ResponseEntity<String> updateUser(@RequestBody UpdateUserDTO updateUserDTO, @AuthenticationPrincipal AppUser user) {
-        appUserService.updateUser(updateUserDTO, user);
+        ResponseCookie jwtCookie = appUserService.updateUser(updateUserDTO, user);
+        if (jwtCookie != null) {
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,jwtCookie.toString()).build();
+        }
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public ResponseEntity<UserInformationDTO> provideUserDetails(@AuthenticationPrincipal AppUser user) {
+
         return ResponseEntity.ok(appUserService.provideUserDetails(user));
     }
 
