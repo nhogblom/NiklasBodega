@@ -6,10 +6,11 @@ const Navbar = () => {
   const navigate = useNavigate();
   const navItems = [
     { label: 'Rooms', path: '/roomspage' },
-    { label: 'Bookings', path: '/bookings' },
-    { label: 'dummy', path: '/dummy' },
-    { label: 'dummy2', path: '/dummy2' },
+    { label: 'Bookings', path: '/myBookings', protected: true },
   ];
+  const authenticatedNavItems = navItems.filter(
+    (item) => !item.protected || isAuthenticated,
+  );
 
   return (
     <nav className="flex items-center justify-between px-8 py-6 bg-white border-b border-stone-200 sticky top-0 z-50">
@@ -22,7 +23,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
-        {navItems.map((item) => (
+        {authenticatedNavItems.map((item) => (
           <Link
             key={item.label}
             to={item.path}
