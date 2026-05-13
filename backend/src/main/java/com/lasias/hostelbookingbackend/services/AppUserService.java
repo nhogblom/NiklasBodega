@@ -104,7 +104,8 @@ public class AppUserService {
         return passwordEncoder.encode(password);
     }
 
-    public void updateUser(UpdateUserDTO updateUserDTO, AppUser user) {
+    public ResponseCookie updateUser(UpdateUserDTO updateUserDTO, AppUser user) {
+        ResponseCookie newCookie = null;
         if (user == null){
             log.error("User not found when updating user");
             throw new IllegalArgumentException("User not found");
@@ -121,6 +122,7 @@ public class AppUserService {
                 throw new IllegalArgumentException("Invalid email format");
             }
             user.setEmail(newEmail);
+            newCookie = jwtService.createJwtCookie(newEmail,false);
         }
         if (updateUserDTO.password() != null){
             String newPassword = updateUserDTO.password();
@@ -132,7 +134,7 @@ public class AppUserService {
         }
         log.info("User updated: {}", user.getEmail());
         appUserRepository.save(user);
-
+        return newCookie;
     }
 
     public void deleteMe(AppUser user) {

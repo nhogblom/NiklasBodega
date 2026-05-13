@@ -15,6 +15,7 @@ import NewBookingsPage from './pages/BookingsPage/NewBookings/NewBookingsPage.ts
 import ForgotPasswordPage from './pages/ForgotPasswordPage.tsx';
 import RoomsPage from './pages/RoomsPage/RoomsPage.tsx';
 import OAuthRedirectPage from './pages/OAuthRedirectPage.tsx';
+import UserSettingsPage from './pages/UserSettingsPage.tsx';
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isAuthLoading } = useAuth();
@@ -45,6 +46,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/myBookings" element={<MyBookingsPage />} />
           <Route path="/newBooking" element={<NewBookingsPage />} />
+          <Route path="/settings" element={<UserSettingsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
