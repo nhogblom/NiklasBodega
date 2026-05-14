@@ -21,51 +21,57 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2UserService oAuth2UserService;
     private final CustomOidcUserService customOidcUserService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        }))
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(
+                            "/api/auth/**",
+                            "/api/auth/login**",
+                            "/oauth2/**",
+                            "/api/user/register",
+                            "/api/rooms/**"
+                    ).permitAll();
 
-            return http
-                    .cors(Customizer.withDefaults())
-                    .csrf(csrf -> csrf.disable())
-                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .exceptionHandling(exception -> exception
-                            .authenticationEntryPoint((request, response, authException) -> {
-                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                            }))
-                    .authorizeHttpRequests(auth -> {
-                        auth.requestMatchers("/api/auth/**","/api/auth/login**","/oauth2/**","/api/user/register", "/api/rooms/**").permitAll();
-                        auth.anyRequest().authenticated();
-                    })
-                    .oauth2Login(oAuth2 ->
-                            oAuth2
-                            .userInfoEndpoint(userInfo -> userInfo
-                                    .userService(oAuth2UserService)
-                                    .oidcUserService(customOidcUserService)
-                            )
-                            .successHandler(oAuth2LoginSuccessHandler)
-                    )
-                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                    .build();
-        }
+                    auth.anyRequest().authenticated();
+                })
+                .oauth2Login(oAuth2 ->
+                        oAuth2
+                                .userInfoEndpoint(userInfo -> userInfo
+                                        .userService(oAuth2UserService)
+                                        .oidcUserService(customOidcUserService)
+                                )
+                                .successHandler(oAuth2LoginSuccessHandler)
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 
-        @Bean
-        public CorsConfigurationSource corsConfigurationSource() {
-            CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","PATCH"));
-            configuration.setAllowedHeaders(List.of("Content-Type", "Authorization"));
-            configuration.setAllowCredentials(true);
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", configuration);
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
 
-            return source;
-        }
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowedHeaders(List.of("Content-Type", "Authorization"));
+        configuration.setAllowCredentials(true);
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
 
+        return source;
+    }
 }
-

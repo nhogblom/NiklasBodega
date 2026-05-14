@@ -8,8 +8,8 @@ const BookingPageMainComponent = ({
   handleCancel,
 }: {
   bookings: Booking[];
-  handleEdit: (id: number) => void;
-  handleCancel: (id: number) => void;
+  handleEdit: (bookingNumber: string) => void;
+  handleCancel: (bookingNumber: string) => void;
 }) => {
   return (
     <div className="min-h-screen bg-stone-100">

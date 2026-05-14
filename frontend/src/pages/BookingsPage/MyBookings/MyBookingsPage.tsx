@@ -13,15 +13,17 @@ const MyBookingsPage = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [chosenBookingId, setChosenBookingId] = useState<number | null>(null);
+  const [chosenBookingNumber, setChosenBookingNumber] = useState<string | null>(
+    null,
+  );
 
-  const handleEdit = (id: number) => {
+  const handleEdit = (bookingNumber: string) => {
     // TODO: navigate to edit booking page
-    console.log('Edit booking', id);
+    console.log('Edit booking', bookingNumber);
   };
 
-  const handleCancel = (id: number) => {
-    setChosenBookingId(id);
+  const handleCancel = (bookingNumber: string) => {
+    setChosenBookingNumber(bookingNumber);
   };
 
   useEffect(() => {
@@ -50,15 +52,15 @@ const MyBookingsPage = () => {
   }
   return (
     <>
-      {chosenBookingId && (
+      {chosenBookingNumber && (
         <CancelBookingConfirmationModal
-          bookingNumber={chosenBookingId}
+          bookingNumber={chosenBookingNumber}
           onConfirm={async () => {
             try {
-              await deleteBooking(chosenBookingId);
+              await deleteBooking(chosenBookingNumber);
             } catch {
               setError('Failed to delete booking.');
-              setChosenBookingId(null);
+              setChosenBookingNumber(null);
               return;
             }
             try {
@@ -67,11 +69,11 @@ const MyBookingsPage = () => {
             } catch {
               setError('Failed to fetch bookings.');
             } finally {
-              setChosenBookingId(null);
+              setChosenBookingNumber(null);
               setLoading(false);
             }
           }}
-          onCancel={() => setChosenBookingId(null)}
+          onCancel={() => setChosenBookingNumber(null)}
         />
       )}
 

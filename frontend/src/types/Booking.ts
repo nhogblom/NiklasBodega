@@ -1,6 +1,8 @@
+import type { Room } from './Room.ts';
+
 export interface Booking {
-  bookingNumber: number;
-  roomName: string;
+  bookingNumber: string;
+  room: Room;
   roomImageUrl: string;
   checkInDate: string;
   checkOutDate: string;

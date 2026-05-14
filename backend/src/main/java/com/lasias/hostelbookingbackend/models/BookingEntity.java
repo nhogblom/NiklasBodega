@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.models;
 import com.lasias.hostelbookingbackend.enums.BookingStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 public class BookingEntity {
@@ -10,6 +11,9 @@ public class BookingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true, updatable = false)
+    private String bookingNumber = UUID.randomUUID().toString();
+
     private LocalDate checkInDate;
 
     private LocalDate checkOutDate;
@@ -17,7 +21,7 @@ public class BookingEntity {
     private boolean extraBed;
 
     @Enumerated(EnumType.STRING)
-    private BookingStatus status = BookingStatus.ACTIVE;
+    private BookingStatus status = BookingStatus.CONFIRMED;
 
     @ManyToOne
     private AppUser user;
@@ -28,17 +32,27 @@ public class BookingEntity {
     public BookingEntity() {
     }
 
-    public BookingEntity(AppUser user, RoomEntity room, LocalDate checkInDate, LocalDate checkOutDate, boolean extraBed) {
+    public BookingEntity(
+            AppUser user,
+            RoomEntity room,
+            LocalDate checkInDate,
+            LocalDate checkOutDate,
+            boolean extraBed
+    ) {
         this.user = user;
         this.room = room;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.extraBed = extraBed;
-        this.status = BookingStatus.ACTIVE;
+        this.status = BookingStatus.CONFIRMED;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getBookingNumber() {
+        return bookingNumber;
     }
 
     public LocalDate getCheckInDate() {
@@ -67,6 +81,10 @@ public class BookingEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
     }
 
     public void setCheckInDate(LocalDate checkInDate) {

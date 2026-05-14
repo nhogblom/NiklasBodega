@@ -12,8 +12,8 @@ const BookingCard = ({
   onCancel,
 }: {
   booking: Booking;
-  onEdit: (id: number) => void;
-  onCancel: (id: number) => void;
+  onEdit: (bookingNumber: string) => void;
+  onCancel: (bookingNumber: string) => void;
 }) => {
   const isCancelled = booking.status === 'CANCELLED';
   const nights = nightsBetween(booking.checkInDate, booking.checkOutDate);
@@ -21,14 +21,14 @@ const BookingCard = ({
   return (
     <div className="bg-white rounded-xl border border-stone-200 p-5 flex gap-5 items-start">
       <img
-        src={booking.roomImageUrl}
-        alt={booking.roomName}
+        src={booking.room.roomType.imageUrl}
+        alt={booking.room.roomType.name}
         className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
       />
 
       <div className="flex-1 min-w-0">
         <h3 className="font-serif text-lg text-stone-800 mb-3">
-          {booking.roomName}
+          {booking.room.roomType.name}
         </h3>
 
         <div className="flex gap-6 mb-3">
@@ -72,14 +72,14 @@ const BookingCard = ({
 
       <div className="flex flex-col gap-2 flex-shrink-0">
         <button
-          onClick={() => onEdit(booking.id)}
+          onClick={() => onEdit(booking.bookingNumber)}
           disabled={isCancelled}
           className="border border-orange-900 text-orange-900 px-4 py-2 rounded text-xs font-bold uppercase tracking-widest hover:bg-orange-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Edit
         </button>
         <button
-          onClick={() => onCancel(booking.id)}
+          onClick={() => onCancel(booking.bookingNumber)}
           disabled={isCancelled}
           className="border border-red-700 text-red-700 px-4 py-2 rounded text-xs font-bold uppercase tracking-widest hover:bg-red-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
         >

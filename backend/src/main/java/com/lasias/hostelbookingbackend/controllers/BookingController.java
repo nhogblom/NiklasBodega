@@ -1,4 +1,5 @@
 package com.lasias.hostelbookingbackend.controllers;
+
 import com.lasias.hostelbookingbackend.dtos.BookingResponseDTO;
 import com.lasias.hostelbookingbackend.dtos.CreateBookingRequestDTO;
 import com.lasias.hostelbookingbackend.dtos.UpdateBookingRequestDTO;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -20,29 +22,43 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingResponseDTO> createBooking(@RequestBody CreateBookingRequestDTO request, @AuthenticationPrincipal AppUser user) {
-        BookingResponseDTO response = bookingService.createBooking(request,user);
+    public ResponseEntity<BookingResponseDTO> createBooking(
+            @RequestBody CreateBookingRequestDTO request,
+            @AuthenticationPrincipal AppUser user
+    ) {
+        BookingResponseDTO response = bookingService.createBooking(request, user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BookingResponseDTO> getBookingById(@PathVariable Long id) {
-        BookingResponseDTO response = bookingService.getBookingById(id);
+    @GetMapping("/my")
+    public ResponseEntity<List<BookingResponseDTO>> getMyBookings(@AuthenticationPrincipal AppUser user) {
+        List<BookingResponseDTO> response = bookingService.getBookingsByUser(user);
+
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/{bookingNumber}")
+    public ResponseEntity<BookingResponseDTO> getBookingByBookingNumber(@PathVariable String bookingNumber) {
+        BookingResponseDTO response = bookingService.getBookingByBookingNumber(bookingNumber);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{bookingNumber}")
     public ResponseEntity<BookingResponseDTO> updateBooking(
-            @PathVariable Long id,
+            @PathVariable String bookingNumber,
             @RequestBody UpdateBookingRequestDTO request
     ) {
-        BookingResponseDTO response = bookingService.updateBooking(id, request);
+        BookingResponseDTO response = bookingService.updateBooking(bookingNumber, request);
+
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
+    @DeleteMapping("/{bookingNumber}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable String bookingNumber) {
+        bookingService.deleteBooking(bookingNumber);
+
         return ResponseEntity.noContent().build();
     }
 }
