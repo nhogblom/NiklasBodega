@@ -3,7 +3,7 @@ const CancelBookingConfirmationModal = ({
   onConfirm,
   onCancel,
 }: {
-  bookingNumber: number;
+  bookingNumber: string;
   onConfirm: () => void;
   onCancel: () => void;
 }) => {

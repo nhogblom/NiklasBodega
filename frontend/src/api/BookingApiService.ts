@@ -3,7 +3,7 @@ import type { BookingRequestDto } from '../pages/BookingsPage/NewBookings/dto/Bo
 
 export const getAllBookings = async () => {
   try {
-    const response = await axiosInstance.get('/api/bookings');
+    const response = await axiosInstance.get('/api/bookings/my');
     return response.data;
   } catch (error) {
     console.error('Error getting all user bookings', error);
@@ -21,7 +21,7 @@ export const createBooking = async (newBooking: BookingRequestDto) => {
   }
 };
 
-export const deleteBooking = async (bookingNumber: number) => {
+export const deleteBooking = async (bookingNumber: string) => {
   try {
     const response = await axiosInstance.delete(
       `/api/bookings/${bookingNumber}`,
