@@ -27,6 +27,7 @@ public class RoomTypeService {
                 .price(roomType.getPrice())
                 .size(roomType.getSize())
                 .capacity(roomType.getCapacity())
+                .extraBedAvailable(roomType.isExtraBedAvailable())
                 .roomBadge(roomType.getBadge())
                 .featured(roomType.isFeatured())
                 .imageUrl(roomType.getImageUrl())

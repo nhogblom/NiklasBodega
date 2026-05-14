@@ -18,6 +18,7 @@ public class RoomTypeDTO {
     private Double price;
     private Integer size;
     private Integer capacity;
+    private boolean extraBedAvailable;
     private RoomBadge roomBadge;
     private boolean featured;
     private String imageUrl;

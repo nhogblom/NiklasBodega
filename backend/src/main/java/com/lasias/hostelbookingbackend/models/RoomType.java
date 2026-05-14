@@ -22,6 +22,7 @@ public class RoomType {
     Double price;
     Integer size;
     Integer capacity;
+    boolean extraBedAvailable;
 
     @Enumerated(EnumType.STRING)
     RoomBadge badge;

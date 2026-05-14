@@ -23,7 +23,7 @@ public class RoomTypeSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (roomTypeRepository.count() == 0) {
             roomTypeRepository.saveAll(roomTypesToAdd());
-            log.info("Succesfully added {} roomTypes.",roomTypesToAdd().size());
+            log.info("Successfully added {} roomTypes.",roomTypesToAdd().size());
         } else {
             log.info("Room Types already exists in database");
         }
@@ -38,6 +38,7 @@ public class RoomTypeSeeder implements CommandLineRunner {
                         .price(480.0)
                         .size(85)
                         .capacity(2)
+                        .extraBedAvailable(true)
                         .badge(RoomBadge.SUITE)
                         .featured(true)
                         .imageUrl("https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&q=80&w=1200")
@@ -49,6 +50,7 @@ public class RoomTypeSeeder implements CommandLineRunner {
                         .price(95.0)
                         .size(22)
                         .capacity(1)
+                        .extraBedAvailable(false)
                         .badge(RoomBadge.STANDARD)
                         .featured(false)
                         .imageUrl("https://images.unsplash.com/photo-1631049552057-403cdb8f0658?auto=format&fit=crop&q=80&w=800")
@@ -61,6 +63,7 @@ public class RoomTypeSeeder implements CommandLineRunner {
                         .price(150.0)
                         .size(35)
                         .capacity(2)
+                        .extraBedAvailable(true)
                         .badge(RoomBadge.STANDARD)
                         .featured(false)
                         .imageUrl("https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&q=80&w=800")
@@ -73,6 +76,7 @@ public class RoomTypeSeeder implements CommandLineRunner {
                         .price(280.0)
                         .size(60)
                         .capacity(4)
+                        .extraBedAvailable(true)
                         .badge(RoomBadge.PREMIUM)
                         .featured(false)
                         .imageUrl("https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=800")
