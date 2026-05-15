@@ -1,11 +1,9 @@
 package com.lasias.hostelbookingbackend.utils.Dataseeder;
 
 import com.lasias.hostelbookingbackend.enums.BookingStatus;
-import com.lasias.hostelbookingbackend.enums.RoomBadge;
 import com.lasias.hostelbookingbackend.models.AppUser;
 import com.lasias.hostelbookingbackend.models.BookingEntity;
 import com.lasias.hostelbookingbackend.models.RoomEntity;
-import com.lasias.hostelbookingbackend.models.RoomType;
 import com.lasias.hostelbookingbackend.repositories.AppUserRepository;
 import com.lasias.hostelbookingbackend.repositories.BookingRepository;
 import com.lasias.hostelbookingbackend.repositories.RoomRepository;
@@ -14,11 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
