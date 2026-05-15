@@ -2,12 +2,12 @@ package com.lasias.hostelbookingbackend.controllers;
 
 import com.lasias.hostelbookingbackend.dtos.RoomTypeDTO;
 import com.lasias.hostelbookingbackend.services.RoomTypeService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,5 +24,10 @@ public class RoomTypeController {
     @GetMapping("/{id}")
     public RoomTypeDTO getRoomTypeById(@PathVariable Long id) {
         return roomTypeService.getRoomTypeById(id);
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<RoomTypeDTO>> getAllRoomTypesByAvailability(@RequestParam LocalDate checkInDate, @RequestParam LocalDate checkOutDate) {
+        return ResponseEntity.ok(roomTypeService.getAllRoomTypesByAvailability(checkInDate, checkOutDate));
     }
 }
