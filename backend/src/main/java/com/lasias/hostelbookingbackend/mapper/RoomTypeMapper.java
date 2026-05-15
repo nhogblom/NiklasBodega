@@ -5,8 +5,10 @@ import com.lasias.hostelbookingbackend.models.RoomType;
 
 public class RoomTypeMapper {
 
+    private RoomTypeMapper() {}
+
     public static RoomType toEntity(RoomTypeDTO dto) {
-        RoomType roomType = RoomType.builder()
+        return RoomType.builder()
                 .name(dto.getName())
                 .type(dto.getType())
                 .description(dto.getDescription())
@@ -17,9 +19,6 @@ public class RoomTypeMapper {
                 .badge(dto.getRoomBadge())
                 .featured(dto.isFeatured())
                 .imageUrl(dto.getImageUrl()).build();
-
-
-        return roomType;
     }
     public static RoomTypeDTO toResponse(RoomType roomType) {
         return new RoomTypeDTO(

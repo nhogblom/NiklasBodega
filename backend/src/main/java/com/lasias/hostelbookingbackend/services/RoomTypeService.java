@@ -43,8 +43,8 @@ public class RoomTypeService {
     }
 
     public List<RoomTypeDTO> getAllRoomTypesByAvailability(LocalDate checkInDate, LocalDate checkOutDate) {
-        LocalDateTime checkIn = LocalDateTime.of(checkInDate, BookingConstants.CHECK_IN_TIME); //TODO decide where timestaps are used
-        LocalDateTime checkOut = LocalDateTime.of(checkOutDate, BookingConstants.CHECK_OUT_TIME);//TODO same
+//        LocalDateTime checkIn = LocalDateTime.of(checkInDate, BookingConstants.CHECK_IN_TIME); //TODO decide where timestaps are used
+//        LocalDateTime checkOut = LocalDateTime.of(checkOutDate, BookingConstants.CHECK_OUT_TIME);//TODO same
         return roomTypeRepository.findAllByAvailability(checkInDate, checkOutDate).stream().map(this::roomTypeToDTO).toList();
     }
 }
