@@ -2,6 +2,7 @@ package com.lasias.hostelbookingbackend.models;
 
 import com.lasias.hostelbookingbackend.enums.AuthProvider;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
