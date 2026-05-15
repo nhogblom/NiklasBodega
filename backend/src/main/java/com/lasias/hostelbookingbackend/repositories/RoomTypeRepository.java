@@ -26,6 +26,6 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
     )
 """)
     List<RoomType> findAllByAvailability(
-            @Param("checkIn") LocalDateTime checkIn,
-            @Param("checkOut") LocalDateTime checkOut
+            @Param("checkIn") LocalDate checkIn,
+            @Param("checkOut") LocalDate checkOut
     );}
