@@ -29,6 +29,7 @@ public class BookingService {
         this.roomRepository = roomRepository;
     }
 
+
     public BookingResponseDTO createBooking(CreateBookingRequestDTO request, AppUser user) {
         validateBookingDates(request.getCheckInDate(), request.getCheckOutDate());
 
