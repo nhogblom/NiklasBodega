@@ -14,7 +14,6 @@ const RoomsPage = () => {
     const fetchRooms = async () => {
       try {
         const allRooms = await getAllRooms();
-        console.log(allRooms);
         setRooms(allRooms);
       } catch {
         setError('Failed loading rooms.');
