@@ -27,7 +27,7 @@ public class RoomTypeController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<RoomTypeDTO>> getAllRoomTypesByAvailability(@RequestParam LocalDate checkInDate, @RequestParam LocalDate checkOutDate) {
-        return ResponseEntity.ok(roomTypeService.getAllRoomTypesByAvailability(checkInDate, checkOutDate));
+    public ResponseEntity<List<RoomTypeDTO>> getAllRoomTypesByAvailability(@RequestParam LocalDate checkInDate, @RequestParam LocalDate checkOutDate, @RequestParam Integer nrOfGuests) {
+        return ResponseEntity.ok(roomTypeService.getAllRoomTypesByAvailability(checkInDate, checkOutDate, nrOfGuests));
     }
 }

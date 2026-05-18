@@ -1,13 +1,11 @@
 package com.lasias.hostelbookingbackend.repositories;
 
-import com.lasias.hostelbookingbackend.dtos.RoomTypeDTO;
 import com.lasias.hostelbookingbackend.models.RoomType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +15,8 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
     @Query("""
     SELECT DISTINCT rt FROM RoomType rt
     JOIN RoomEntity r ON r.roomType = rt
-    WHERE NOT EXISTS (
+    WHERE rt.capacity >= :nrOfGuests
+    AND NOT EXISTS (
         SELECT b FROM BookingEntity b
         WHERE b.room = r
         AND b.status <> com.lasias.hostelbookingbackend.enums.BookingStatus.CANCELLED
@@ -27,5 +26,5 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
 """)
     List<RoomType> findAllByAvailability(
             @Param("checkIn") LocalDate checkIn,
-            @Param("checkOut") LocalDate checkOut
-    );}
+            @Param("checkOut") LocalDate checkOut,
+            @Param("nrOfGuests") Integer nrOfGuests);}
