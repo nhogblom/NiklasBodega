@@ -12,9 +12,15 @@ export const getAllRooms = async () => {
   }
 };
 
-export const getAllAvailableRooms = async () => {
+export const getAllAvailableRooms = async (
+  checkInDate: string,
+  checkOutDate: string,
+  totalGuests: number,
+) => {
   try {
-    const response = await axiosInstance.get('/api/rooms/available');
+    const response = await axiosInstance.get('/api/rooms/roomTypes/available', {
+      params: { checkInDate, checkOutDate, totalGuests },
+    });
     return response.data;
   } catch (error) {
     console.error('Error getting available rooms', error);

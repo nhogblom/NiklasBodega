@@ -1,19 +1,31 @@
 import type { Room } from '../../types/Room.ts';
 import { useEffect, useState } from 'react';
-import { getAllRooms } from '../../api/RoomApiService.ts';
+import { getAllAvailableRooms, getAllRooms } from '../../api/RoomApiService.ts';
 import LoadingMessage from '../../components/LoadingMessage.tsx';
 import ErrorMessage from '../../components/ErrorMessage.tsx';
 import RoomsPageMainComponent from './components/RoomsPageMainComponent.tsx';
+import { useSearchParams } from 'react-router-dom';
 
 const RoomsPage = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const checkInDate = searchParams.get('checkInDate');
+  const checkOutDate = searchParams.get('checkOutDate');
+  const totalGuests = searchParams.get('totalGuests');
 
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const allRooms = await getAllRooms();
+        const allRooms =
+          checkInDate && checkOutDate
+            ? await getAllAvailableRooms(
+                checkInDate,
+                checkOutDate,
+                Number(totalGuests),
+              )
+            : await getAllRooms();
         setRooms(allRooms);
       } catch {
         setError('Failed loading rooms.');
@@ -22,7 +34,7 @@ const RoomsPage = () => {
       }
     };
     fetchRooms();
-  }, []);
+  }, [checkInDate, checkOutDate, totalGuests]);
 
   if (loading) return <LoadingMessage message={'Loading rooms...'} />;
 
