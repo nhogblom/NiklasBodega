@@ -1,9 +1,11 @@
-const SearchField = ({
+const SearchDateField = ({
   label,
-  inputPlaceholder,
+  value,
+  onChange,
 }: {
   label: string;
-  inputPlaceholder: string;
+  value: string;
+  onChange: (value: string) => void;
 }) => {
   return (
     <div className="flex-1 text-left min-w-[150px]">
@@ -11,12 +13,13 @@ const SearchField = ({
         {label}
       </label>
       <input
-        type="text"
-        defaultValue={inputPlaceholder}
+        type="date"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none"
       />
     </div>
   );
 };
 
-export default SearchField;
+export default SearchDateField;
