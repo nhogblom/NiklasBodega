@@ -1,6 +1,23 @@
 import SearchBar from './SearchBar.tsx';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HomePageHero = () => {
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
+  const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (!checkOutDate || !checkInDate) return;
+
+    const totalGuests = adults + children;
+    navigate(
+      `/rooms?checkIn=${checkInDate}&checkOut=${checkOutDate}&guests=${totalGuests}`,
+    );
+  };
+
   return (
     <header className="relative h-[85vh] flex items-center justify-center overflow-hidden">
       <img
@@ -17,7 +34,17 @@ const HomePageHero = () => {
         <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
           Experience the warmth of the Mediterranean at Niklas Bodega.
         </p>
-        <SearchBar />
+        <SearchBar
+          checkInDate={checkInDate}
+          checkOutDate={checkOutDate}
+          onCheckInDateChange={setCheckInDate}
+          onCheckOutDateChange={setCheckOutDate}
+          adults={adults}
+          children={children}
+          onAdultsChange={setAdults}
+          onChildrenChange={setChildren}
+          onSearch={handleSearch}
+        />
       </div>
     </header>
   );

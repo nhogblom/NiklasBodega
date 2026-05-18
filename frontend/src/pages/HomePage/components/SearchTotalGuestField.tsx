@@ -1,9 +1,14 @@
-import { useState } from 'react';
-
-const SearchTotalGuestField = () => {
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
-
+const SearchTotalGuestField = ({
+  adults,
+  onAdultsChange,
+  children,
+  onChildrenChange,
+}: {
+  adults: number;
+  children: number;
+  onAdultsChange: (adults: number) => void;
+  onChildrenChange: (children: number) => void;
+}) => {
   const adultOptions = Array.from({ length: 4 }, (_, i) => i + 1);
   const childrenOptions = Array.from({ length: 5 }, (_, i) => i);
 
@@ -15,7 +20,7 @@ const SearchTotalGuestField = () => {
         </label>
         <select
           value={adults}
-          onChange={(e) => setAdults(Number(e.target.value))}
+          onChange={(e) => onAdultsChange(Number(e.target.value))}
           className="w-full border border-stone-200 p-2.5 rounded bg-white focus:ring-1 focus:ring-orange-900 outline-none"
         >
           {adultOptions.map((num) => (
@@ -32,7 +37,7 @@ const SearchTotalGuestField = () => {
         </label>
         <select
           value={children}
-          onChange={(e) => setChildren(Number(e.target.value))}
+          onChange={(e) => onChildrenChange(Number(e.target.value))}
           className="w-full border border-stone-200 p-2.5 rounded bg-white focus:ring-1 focus:ring-orange-900 outline-none"
         >
           {childrenOptions.map((num) => (
