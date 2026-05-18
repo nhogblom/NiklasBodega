@@ -7,7 +7,7 @@ import {
   Routes,
 } from 'react-router-dom';
 import LoginPage from './pages/LoginPage.tsx';
-import HomePage from './pages/HomePage.tsx';
+import HomePage from './pages/HomePage/HomePage.tsx';
 import RegisterPage from './pages/RegisterPage.tsx';
 import { useAuth } from './hooks/useAuth.tsx';
 import MyBookingsPage from './pages/BookingsPage/MyBookings/MyBookingsPage.tsx';
@@ -16,6 +16,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage.tsx';
 import RoomsPage from './pages/RoomsPage/RoomsPage.tsx';
 import OAuthRedirectPage from './pages/OAuthRedirectPage.tsx';
 import UserSettingsPage from './pages/UserSettingsPage.tsx';
+import SearchPage from './pages/SearchPage/SearchPage.tsx';
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isAuthLoading } = useAuth();
@@ -42,6 +43,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/roomspage" element={<RoomsPage />} />
+        <Route path="/searchpage" element={<SearchPage />} />
         <Route path="/oauth2/redirect" element={<OAuthRedirectPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/myBookings" element={<MyBookingsPage />} />
