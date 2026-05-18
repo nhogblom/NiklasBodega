@@ -62,7 +62,7 @@ public class BookingSeeder implements CommandLineRunner {
             ));
         }
         // path below returns empty list
-        // http://localhost:8080/api/rooms/roomTypes/available?checkInDate=2028-01-01&checkOutDate=2028-01-05
+        // http://localhost:8080/api/rooms/roomTypes/available?checkInDate=2028-01-01&checkOutDate=2028-01-05&nrOfGuests=1
         // All rooms booked on 2028-01-01 to 2028-01-05
         for (int i = 0; i < rooms.size(); i++) {
 
@@ -77,7 +77,7 @@ public class BookingSeeder implements CommandLineRunner {
         }
 
         // path below returns list of room type 1 SUITE since it is the only one not booked
-        // http://localhost:8080/api/rooms/roomTypes/available?checkInDate=2028-02-01&checkOutDate=2028-02-05
+        // http://localhost:8080/api/rooms/roomTypes/available?checkInDate=2028-02-01&checkOutDate=2028-02-05&nrOfGuests=1
         //All but room id 10 booked on 2028-02-01 to 2028-02-05
         for (int i = 0; i < rooms.size() - 1; i++) {
 
@@ -90,6 +90,10 @@ public class BookingSeeder implements CommandLineRunner {
                     BookingStatus.CONFIRMED
             ));
         }
+
+        // path below returns list of room type FAMILY SUITE since it is the only one not booked
+        // http://localhost:8080/api/rooms/roomTypes/available?checkInDate=2028-03-01&checkOutDate=2028-03-05&nrOfGuests=4
+        //All rooms are free but setting nrOfGuests limit result as intended
 
         return bookings;
     }
