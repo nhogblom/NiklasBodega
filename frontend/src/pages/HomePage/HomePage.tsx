@@ -1,18 +1,6 @@
 import React from 'react';
-import Navbar from '../components/Navbar.tsx';
-
-const BookingInput = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex-1 text-left min-w-[150px]">
-    <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
-      {label}
-    </label>
-    <input
-      type="text"
-      defaultValue={value}
-      className="w-full border border-stone-200 p-2.5 rounded focus:ring-1 focus:ring-orange-900 outline-none"
-    />
-  </div>
-);
+import Navbar from '../../components/Navbar.tsx';
+import SearchField from './SearchField.tsx';
 
 const Hero = () => (
   <header className="relative h-[85vh] flex items-center justify-center overflow-hidden">
@@ -32,8 +20,8 @@ const Hero = () => (
       </p>
 
       <div className="bg-white p-5 rounded-xl shadow-2xl flex flex-wrap md:flex-nowrap gap-4 items-end max-w-5xl mx-auto text-stone-800">
-        <BookingInput label="Check-In" value="Oct 12, 2026" />
-        <BookingInput label="Check-Out" value="Oct 19, 2026" />
+        <SearchField label={'Check-in'} inputPlaceholder={'Check-in date'} />
+        <SearchField label={'Check-out'} inputPlaceholder={'Check-out date'} />
         <div className="flex-1 text-left min-w-[150px]">
           <label className="block text-[10px] uppercase font-bold text-stone-500 mb-1 ml-1">
             Guests
