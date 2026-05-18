@@ -13,7 +13,7 @@ const RoomsPage = () => {
   const [searchParams] = useSearchParams();
   const checkInDate = searchParams.get('checkInDate');
   const checkOutDate = searchParams.get('checkOutDate');
-  const totalGuests = searchParams.get('totalGuests');
+  const nrOfGuests = searchParams.get('totalGuests');
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -23,9 +23,10 @@ const RoomsPage = () => {
             ? await getAllAvailableRooms(
                 checkInDate,
                 checkOutDate,
-                Number(totalGuests),
+                Number(nrOfGuests),
               )
             : await getAllRooms();
+        console.log(allRooms);
         setRooms(allRooms);
       } catch {
         setError('Failed loading rooms.');
@@ -34,7 +35,7 @@ const RoomsPage = () => {
       }
     };
     fetchRooms();
-  }, [checkInDate, checkOutDate, totalGuests]);
+  }, [checkInDate, checkOutDate, nrOfGuests]);
 
   if (loading) return <LoadingMessage message={'Loading rooms...'} />;
 

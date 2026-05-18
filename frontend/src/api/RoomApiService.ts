@@ -15,11 +15,11 @@ export const getAllRooms = async () => {
 export const getAllAvailableRooms = async (
   checkInDate: string,
   checkOutDate: string,
-  totalGuests: number,
+  nrOfGuests: number,
 ) => {
   try {
     const response = await axiosInstance.get('/api/rooms/roomTypes/available', {
-      params: { checkInDate, checkOutDate, totalGuests },
+      params: { checkInDate, checkOutDate, nrOfGuests },
     });
     return response.data;
   } catch (error) {

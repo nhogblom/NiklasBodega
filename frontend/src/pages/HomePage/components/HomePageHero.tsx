@@ -14,7 +14,7 @@ const HomePageHero = () => {
 
     const totalGuests = adults + children;
     navigate(
-      `/roomspage?checkIn=${checkInDate}&checkOut=${checkOutDate}&guests=${totalGuests}`,
+      `/searchpage?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&nrOfGuests=${totalGuests}&adults=${adults}&children=${children}`,
     );
   };
 
